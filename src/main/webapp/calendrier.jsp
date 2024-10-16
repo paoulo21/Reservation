@@ -60,11 +60,11 @@
                     <c:forEach var="jour" begin="1" end="${nombreDeJours}">
                         <td class="current-month">
                             <form method="post" action="calendrier">
-                                <input type="hidden" name="jour" value="${jour}">
+                                <input type="hidden" name="jour" value="${dateCourante.withDayOfMonth(jour)}">
                                 <input type="hidden" name="mois" value="${dateCourante}">
                                 <button type="submit" class="btn btn-link">${jour}</button>
                             </form>
-                            <div>Clicks : ${clickCounters[jour]}</div>
+                            <div>Clicks : ${clickCounters[dateCourante.withDayOfMonth(jour).toString()]}</div>
                         </td>
                         <!-- Nouvelle ligne après chaque dimanche -->
                         <c:if test="${(jour + premierJourDuMois - 1) % 7 == 0}">
