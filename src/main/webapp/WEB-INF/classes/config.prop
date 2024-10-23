@@ -1,0 +1,4 @@
+driver=org.postgresql.Driver
+url=jdbc:postgresql://psqlserv/but3
+nom=paullouisgomisetu
+mdp=moi
