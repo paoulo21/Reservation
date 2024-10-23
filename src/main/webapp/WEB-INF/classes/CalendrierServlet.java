@@ -12,7 +12,7 @@ import java.util.Map;
 @WebServlet("/calendrier")
 public class CalendrierServlet extends HttpServlet {
     // Paramètres de connexion à la base de données PostgreSQL
-    private static final String JDBC_URL = "jdbc:postgresql://psqlserv/but2?allowMultiQueries=true";
+    private static final String JDBC_URL = "jdbc:postgresql://psqlserv/but3?allowMultiQueries=true";
     private static final String JDBC_USER = "paullouisgomisetu";
     private static final String JDBC_PASSWORD = "moi";
 
@@ -38,9 +38,9 @@ public class CalendrierServlet extends HttpServlet {
 
         // Gestion des compteurs de clics par jour du mois
         request.setAttribute("clickCounters", clickCounters);
-
+        System.out.println("classes");
         // Génération du fichier JSP
-        //request.getRequestDispatcher("/calendrier.jsp").forward(request, response);
+        request.getRequestDispatcher("/cal.jsp").forward(request, response);
     }
 
     @Override
