@@ -1,3 +1,4 @@
+deop table if exists Constraints;
 CREATE TABLE Constraints (
     id SERIAL PRIMARY KEY,
     enabled_days INTEGER[],
@@ -9,19 +10,19 @@ CREATE TABLE Constraints (
 );
 INSERT INTO Constraints (enabled_days, max_per_slot, minutes_between_slots, start, end, name)
 VALUES (
-    ARRAY[1, 2, 3, 4, 5, 6, 7],  -- enabledDays
-    30,                         -- maxPerSlot
-    60,                         -- minutesBetweenSlots
-    '11:00:00',                -- start
-    '18:00:00',                -- end
-    'Piscine'                  -- name
+    ARRAY[1, 2, 3, 4, 5, 6, 7],
+    30,                        
+    60,                         
+    '11:00:00',                
+    '18:00:00',              
+    'Piscine'                 
 );
 INSERT INTO Constraints (enabled_days, max_per_slot, minutes_between_slots, start, end, name)
 VALUES (
-    ARRAY[1, 2, 3, 4, 5],  -- enabledDays
-    1,                         -- maxPerSlot
-    15,                         -- minutesBetweenSlots
-    '13:00:00',                -- start
-    '20:00:00',                -- end
-    'Medecin'                  -- name
+    ARRAY[1, 2, 3, 4, 5], 
+    1,                        
+    15,                     
+    '13:00:00',             
+    '20:00:00',             
+    'Medecin'              
 );

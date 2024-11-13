@@ -5,9 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class CalendrierDAO {
@@ -90,6 +88,39 @@ public class CalendrierDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    // Charger les compteurs depuis la base de données pour un mois donné
+    public Map<String, Integer> chargerCreneaux(LocalDate date) {
+        Map<String, Integer> clickCounters = new HashMap<>();
+        String sql = "SELECT dateTime, clicks FROM creneaux WHERE date >= ? AND date <= ?";
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            LocalDate premierJour = date.withDayOfMonth(1);
+            LocalDate dernierJour = date.withDayOfMonth(date.lengthOfMonth());
+
+            ps.setDate(1, Date.valueOf(premierJour));
+            ps.setDate(2, Date.valueOf(dernierJour));
+
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                LocalDate jour = rs.getDate("date").toLocalDate();
+                int clicks = rs.getInt("clicks");
+                clickCounters.put(jour.toString(), clicks);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return clickCounters;
     }
     
 }
