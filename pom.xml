@@ -46,6 +46,17 @@
         <artifactId>jakarta.servlet.jsp-api</artifactId>
         <version>4.0.0</version>
     </dependency>
+    <dependency>
+    <groupId>org.eclipse.persistence</groupId>
+    <artifactId>eclipselink</artifactId>
+    <version>4.0.3</version>
+    </dependency>
+    <!-- EclipseLink -->
+    <dependency>
+    <groupId>org.eclipse.persistence</groupId>
+    <artifactId>org.eclipse.persistence.jpa</artifactId>
+    <version>4.0.3</version>
+    </dependency>
     <!-- ======================= -->
     </dependencies>
     <build>

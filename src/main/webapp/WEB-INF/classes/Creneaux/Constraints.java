@@ -4,8 +4,16 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class Constraints {
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
+@Entity
+public class Constraints {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int id;
     public int[] enabledDays;
     public int maxPerSlot;
     public int minutesBetweenSlots;
