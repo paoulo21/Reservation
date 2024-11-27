@@ -5,6 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -29,12 +30,14 @@ public class CalendrierServlet extends HttpServlet {
         request.setAttribute("premierJourDuMois", premierJourDuMois);
         request.setAttribute("nombreDeJours", nombreDeJours);
         
-        clickCounters = dao.chargerClickCounters(dateCourante);
+        //clickCounters = dao.chargerClickCounters(dateCourante);
         reservationCounters = dao.chargerCreneaux(dateCourante); // Charger les compteurs de réservations
         Constraints constraints = dao.genererCreneaux(2);
         
+        System.out.println(Arrays.toString(constraints.enabledDays));
+
         request.setAttribute("constraints", constraints);
-        request.setAttribute("clickCounters", clickCounters);
+        //request.setAttribute("clickCounters", clickCounters);
         request.setAttribute("reservationCounters", reservationCounters); // Passer les compteurs de réservations à la JSP
         
         request.getRequestDispatcher("/cal.jsp").forward(request, response);

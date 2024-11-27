@@ -14,7 +14,7 @@ public class CreneauxServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Récupération de l'ID de la contrainte à partir des paramètres de requête
-        int contrainteId = 1/*Integer.parseInt(request.getParameter("contrainteId"))*/;
+        int contrainteId = 2/*Integer.parseInt(request.getParameter("contrainteId"))*/;
 
         // Récupération des données de la contrainte à partir de la base de données
         CalendrierDAO calendrierDAO = new CalendrierDAO();

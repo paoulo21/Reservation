@@ -40,7 +40,8 @@ CREATE TABLE Crenaux (
 CREATE TABLE Utilisateur (
     id SERIAL PRIMARY KEY,
     nom VARCHAR(255) NOT NULL,
-    prenom VARCHAR(255) NOT NULL
+    prenom VARCHAR(255) NOT NULL,
+    role VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE Reservation (
@@ -50,8 +51,8 @@ CREATE TABLE Reservation (
     CONSTRAINT fk_utilisateur FOREIGN KEY (id_utilisateur) REFERENCES Utilisateur(id)
 );
 
-INSERT INTO Utilisateur (nom, prenom) VALUES ('Doe', 'John');
-INSERT INTO Utilisateur (nom, prenom) VALUES ('Smith', 'Alice');
+INSERT INTO Utilisateur (nom, prenom,role) VALUES ('Doe', 'John','Admin');
+INSERT INTO Utilisateur (nom, prenom,role) VALUES ('Smith', 'Alice','User');
 
 INSERT INTO Reservation (id_utilisateur, date_heure) VALUES (1, '2024-11-20 14:00:00');
 INSERT INTO Reservation (id_utilisateur, date_heure) VALUES (2, '2024-11-21 15:30:00');
