@@ -77,7 +77,6 @@
                         <td class="current-month" onclick="this.querySelector('form').submit();" style="cursor: pointer;">
                             <form method="get" action="creneaux" style="display: none;">
                                 <input type="hidden" name="jour" value="<%= dateCourante.withDayOfMonth(jour).toString() %>">
-                                <input type="hidden" name="mois" value="<%= dateCourante.toString() %>">
                             </form>
                             <%
                             // Récupérer les contraintes depuis la requête
@@ -101,11 +100,11 @@
                             } else {
                                 totalReservationsAvailable = 0; // Jour non activé
                             }                            
-
+                            LocalDate dateComplete = LocalDate.of(dateCourante.getYear(),dateCourante.getMonthValue(),jour);
                             // Afficher le nombre total de réservations disponibles pour ce jour (0 si le jour n'est pas activé)
                             %>
                             <%= jour %>
-                            <div>Réservations Actuelles : <%= reservationCounters.get(String.valueOf(jour)) != null ? reservationCounters.get(String.valueOf(jour)) : 0 %>/<%= totalReservationsAvailable %></div>
+                            <div>Réservations Actuelles : <%= reservationCounters.get(dateComplete.toString()) != null ? reservationCounters.get(dateComplete.toString()) : 0 %>/<%= totalReservationsAvailable %></div>
                         </td>
                         <% 
                         // Nouvelle ligne après chaque dimanche

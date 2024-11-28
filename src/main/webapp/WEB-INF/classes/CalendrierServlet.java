@@ -10,12 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import Creneaux.Constraints;
+import DAO.CalendrierDAO;
 
 @WebServlet("/calendrier")
 public class CalendrierServlet extends HttpServlet {
     
     private CalendrierDAO dao = new CalendrierDAO();
-    private Map<String, Integer> clickCounters = new HashMap<>();
     private Map<String, Integer> reservationCounters = new HashMap<>();
 
     @Override
@@ -33,8 +33,8 @@ public class CalendrierServlet extends HttpServlet {
         //clickCounters = dao.chargerClickCounters(dateCourante);
         reservationCounters = dao.chargerCreneaux(dateCourante); // Charger les compteurs de réservations
         Constraints constraints = dao.genererCreneaux(2);
-        
-        System.out.println(Arrays.toString(constraints.enabledDays));
+
+        System.out.println(test());
 
         request.setAttribute("constraints", constraints);
         //request.setAttribute("clickCounters", clickCounters);
@@ -51,5 +51,20 @@ public class CalendrierServlet extends HttpServlet {
             dao.incrementerClickCounter(dateClique);
         }
         response.sendRedirect("calendrier?mois=" + request.getParameter("mois"));
+    }
+
+    public String test(){
+        StringBuilder sb = new StringBuilder("ReservationCounters: {");
+
+        reservationCounters.forEach((key, value) -> {
+            sb.append(key).append("=").append(value).append(", ");
+        });
+
+        if (!reservationCounters.isEmpty()) {
+            sb.setLength(sb.length() - 2); // Supprime la dernière virgule et l'espace
+        }
+
+        sb.append("}");
+        return sb.toString();
     }
 }

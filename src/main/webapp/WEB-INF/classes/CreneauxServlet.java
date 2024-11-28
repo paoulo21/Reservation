@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import Creneaux.*;
+import DAO.CalendrierDAO;
 
 @WebServlet("/creneaux")
 public class CreneauxServlet extends HttpServlet {
@@ -34,7 +35,6 @@ public class CreneauxServlet extends HttpServlet {
         // Set des attributs pour la JSP
         request.setAttribute("constraints", constraints);
         request.setAttribute("jour", jour);
-        System.out.println(constraints);
         // Dispatch vers la JSP creneaux.jsp
         request.getRequestDispatcher("/creneaux.jsp").forward(request, response);
     }

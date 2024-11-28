@@ -1,3 +1,4 @@
+package DAO;
 import java.sql.Array;
 import java.sql.Connection;
 import java.sql.Date;
@@ -5,20 +6,23 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import Creneaux.*;
 
 public class CalendrierDAO {
     DS ds;
     Connection con;
-    private static final String JDBC_URL = "jdbc:postgresql://psqlserv/but3?allowMultiQueries=true";
-    private static final String JDBC_USER = "paullouisgomisetu";
+    private static final String JDBC_URL = "jdbc:postgresql://127.0.0.1:5432/postgres";
+    private static final String JDBC_USER = "postgres";
     private static final String JDBC_PASSWORD = "moi";
 
     public CalendrierDAO() {
@@ -179,5 +183,84 @@ public class CalendrierDAO {
         
         return reservationCounters;
     }
+
+    public Map<String, Integer> chargerCreneauxParJour(LocalDate date, int minutesEntreCreneaux) {
+        Map<String, Integer> creneauCounters = new HashMap<>();
+        String sql = "SELECT date_heure, COUNT(*) AS total_reservations " +
+                     "FROM Reservation " +
+                     "WHERE DATE(date_heure) = ? " +
+                     "GROUP BY date_heure " +
+                     "ORDER BY date_heure";
+        
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+             
+            ps.setDate(1, Date.valueOf(date));
+            
+            ResultSet rs = ps.executeQuery();
+            
+            // Itérer sur chaque réservation et les classer par créneau horaire
+            while (rs.next()) {
+                LocalDateTime dateHeure = rs.getTimestamp("date_heure").toLocalDateTime();
+                int totalReservations = rs.getInt("total_reservations");
+                
+                // Calcul du créneau : ex. "09:00-09:30" pour des créneaux de 30 minutes
+                LocalTime startTime = dateHeure.toLocalTime().withMinute((dateHeure.getMinute() / minutesEntreCreneaux) * minutesEntreCreneaux).withSecond(0).withNano(0);
+                LocalTime endTime = startTime.plusMinutes(minutesEntreCreneaux);
+                
+                String creneau = startTime + "-" + endTime;
+                
+                // Ajouter ou incrémenter le créneau dans la map
+                creneauCounters.put(creneau, creneauCounters.getOrDefault(creneau, 0) + totalReservations);
+            }
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return creneauCounters;
+    }
+
+    public boolean ajouterReservation(LocalDate jour, String creneau, int utilisateurId) {
+        // Convertir le créneau en début et fin
+        String[] heures = creneau.split("-");
+        if (heures.length != 2) {
+            throw new IllegalArgumentException("Créneau invalide : " + creneau);
+        }
+        
+        LocalTime debut = LocalTime.parse(heures[0]);
+        
+        LocalDateTime dateHeureDebut = LocalDateTime.of(jour, debut);
+    
+        String sql = "INSERT INTO Reservation (id_utilisateur, date_heure) VALUES (?, ?)";
+    
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+    
+        try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            
+            ps.setInt(1, utilisateurId); // ID de l'utilisateur
+            ps.setTimestamp(2, Timestamp.valueOf(dateHeureDebut)); // Date et heure du créneau
+            
+            int rowsAffected = ps.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        return false;
+    }
+    
+    
     
 }

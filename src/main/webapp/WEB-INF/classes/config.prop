@@ -1,4 +1,4 @@
 driver=org.postgresql.Driver
-url=jdbc:postgresql://psqlserv/but3
-nom=paullouisgomisetu
+url=jdbc:postgresql://127.0.0.1:5432/postgres
+nom=postgres
 mdp=moi
