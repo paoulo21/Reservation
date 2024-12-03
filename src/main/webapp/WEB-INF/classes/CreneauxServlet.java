@@ -5,10 +5,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import Creneaux.*;
 import DAO.CalendrierDAO;
+import POJO.Constraints;
 
 @WebServlet("/creneaux")
 public class CreneauxServlet extends HttpServlet {

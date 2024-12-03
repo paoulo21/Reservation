@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-SaeWebApplication<saeWeb>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "saeWeb.SaeWebApplication",
+            "projectName": "saeWeb",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

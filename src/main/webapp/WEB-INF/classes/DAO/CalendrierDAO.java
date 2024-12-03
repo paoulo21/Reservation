@@ -10,13 +10,13 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
-import Creneaux.*;
+import POJO.Constraints;
 
 public class CalendrierDAO {
     DS ds;
@@ -141,9 +141,11 @@ public class CalendrierDAO {
         e.printStackTrace();
         // Gérer les erreurs de connexion ou d'exécution de requête
     }
-    
+    List<Integer> listEnab = Arrays.stream(enabledDays)
+      .boxed()
+      .collect(Collectors.toList());;
     // Générer les créneaux en fonction des détails de la contrainte
-    Constraints creneaux = new Constraints(enabledDays,maxPerSlot,minutesBetweenSlots,start,end,name);
+    Constraints creneaux = new Constraints(listEnab,maxPerSlot,minutesBetweenSlots,start,end,name);
     // Ajoutez la logique de génération de créneaux ici en utilisant les détails récupérés de la base de données
     
     return creneaux;
