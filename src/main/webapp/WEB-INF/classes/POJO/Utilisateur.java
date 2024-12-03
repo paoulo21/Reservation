@@ -27,6 +27,9 @@ public class Utilisateur {
     @Column(name = "role", nullable = false)
     private String role;
 
+    @Column(name = "mdp", nullable = false)
+    private String mdp;
+
     // Relation One-to-Many (un utilisateur peut avoir plusieurs réservations)
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
@@ -70,5 +73,13 @@ public class Utilisateur {
 
     public void setReservations(List<Reservation> reservations) {
         this.reservations = reservations;
+    }
+
+    public String getMdp() {
+        return mdp;
+    }
+
+    public void setMdp(String mdp) {
+        this.mdp = mdp;
     }
 }

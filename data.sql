@@ -19,8 +19,8 @@ VALUES (
     'Medecin'              
 );
 
-INSERT INTO utilisateur (nom, prenom, role) VALUES ('Doe', 'John', 'Admin');
-INSERT INTO utilisateur (nom, prenom, role) VALUES ('Smith', 'Alice', 'User');
+INSERT INTO utilisateur (nom, prenom, role,mdp) VALUES ('Doe', 'John', 'Admin','azer');
+INSERT INTO utilisateur (nom, prenom, role,mdp) VALUES ('Smith', 'Alice', 'User','tyui');
 
 
 INSERT INTO Reservation (id_utilisateur, date_heure) VALUES (1, '2024-11-20 14:00:00');
