@@ -38,7 +38,7 @@ public class ConnexionController {
         utilisateur.setMdp(md5(utilisateur.getMdp()));
         utilisateur.setRole("User");
         utilisateurRepository.save(utilisateur);
-        session.setAttribute("principal", utilisateur.getNom() + "-" + utilisateur.getRole());
+        session.setAttribute("principal", utilisateur);
         return "redirect:/calendrier";
     }
 
@@ -53,7 +53,7 @@ public class ConnexionController {
     public String connecterUtilisateur(@RequestParam("nom") String nom, @RequestParam("mdp") String mdp, HttpSession session, Model model) {
         Utilisateur utilisateur = utilisateurRepository.findByNomAndMdp(nom, md5(mdp));
         if (utilisateur != null) {
-            session.setAttribute("principal", utilisateur.getNom() + "-" + utilisateur.getRole());
+            session.setAttribute("principal", utilisateur);
             return "redirect:/calendrier";
         } else {
             model.addAttribute("errorMessage", "Nom ou mot de passe incorrect.");

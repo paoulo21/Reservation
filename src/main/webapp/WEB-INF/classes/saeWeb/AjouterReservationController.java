@@ -10,6 +10,7 @@ import POJO.Reservation;
 import POJO.ReservationRepository;
 import POJO.Utilisateur;
 import POJO.UtilisateurRepository;
+import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -29,8 +30,15 @@ public class AjouterReservationController {
     public String ajouterReservation(
             @RequestParam("jour") String jourStr,
             @RequestParam("creneau") String creneau,
-            @RequestParam(name = "utilisateurId", defaultValue = "1") int utilisateurId, // Exemple par défaut
+            HttpSession session,
             Model model) {
+                // Vérifier si l'ID de l'utilisateur est présent dans la session
+        Long utilisateurId = ((Utilisateur)session.getAttribute("principal")).getId();
+        if (utilisateurId == null) {
+            model.addAttribute("errorMessage", "Cette action nécessite d'être connecté.");
+            return "redirect:/connexion"; // Redirige vers la page de connexion
+        }
+
         try {
         LocalDate jour = LocalDate.parse(jourStr);
         // Récupérer l'utilisateur (à partir de la session ou d'un paramètre)
