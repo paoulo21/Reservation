@@ -17,6 +17,8 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
+<a href="/inscription" class="btn btn-primary">inscription</a>
+<a href="/connexion" class="btn btn-primary">Connexion</a>
 <body class="bg-light">
     <div class="container my-5">
         <h1 class="text-center mb-4">Calendrier des Créneaux du <%= jour.toString() %></h1>

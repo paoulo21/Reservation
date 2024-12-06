@@ -26,6 +26,8 @@
     </style>
 </head>
 <body>
+    <a href="/inscription" class="btn btn-primary">inscription</a>
+    <a href="/connexion" class="btn btn-primary">Connexion</a>
     <div class="container">
         <h1>Calendrier Mensuel</h1>
         <%
