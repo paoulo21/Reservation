@@ -23,6 +23,7 @@
                 <input type="password" class="form-control" id="mdp" name="mdp" required>
             </div>
             <button type="submit" class="btn btn-primary">S'inscrire</button>
+            <a href="/connexion" class="btn btn-secondary">Connexion</a>
         </form>
     </div>
 </body>

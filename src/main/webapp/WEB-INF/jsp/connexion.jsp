@@ -19,6 +19,7 @@
                 <input type="password" class="form-control" id="mdp" name="mdp" required>
             </div>
             <button type="submit" class="btn btn-primary">Se connecter</button>
+            <a href="/inscription" class="btn btn-secondary">S'inscrire</a>
             <div class="alert alert-danger mt-3" style="display: ${not empty errorMessage ? 'block' : 'none'};">
                 ${errorMessage}
             </div>

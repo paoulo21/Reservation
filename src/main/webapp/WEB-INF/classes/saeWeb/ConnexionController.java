@@ -36,7 +36,7 @@ public class ConnexionController {
     public String enregistrerUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, HttpSession session) {
         // Encodage du mot de passe en MD5
         utilisateur.setMdp(md5(utilisateur.getMdp()));
-        utilisateur.setRole("User"); // Par défaut, on attribue le rôle "USER"
+        utilisateur.setRole("User");
         utilisateurRepository.save(utilisateur);
         session.setAttribute("principal", utilisateur.getNom() + "-" + utilisateur.getRole());
         return "redirect:/calendrier";
