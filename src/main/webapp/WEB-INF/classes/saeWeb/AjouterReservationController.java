@@ -32,18 +32,19 @@ public class AjouterReservationController {
             @RequestParam("creneau") String creneau,
             HttpSession session,
             Model model) {
-                // Vérifier si l'ID de l'utilisateur est présent dans la session
-        Long utilisateurId = ((Utilisateur)session.getAttribute("principal")).getId();
-        if (utilisateurId == null) {
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("principal");
+    
+            if (utilisateur == null) {      
+        
             model.addAttribute("errorMessage", "Cette action nécessite d'être connecté.");
             return "redirect:/connexion"; // Redirige vers la page de connexion
         }
-
+        //Long utilisateurId = utilisateur.getsId();
         try {
         LocalDate jour = LocalDate.parse(jourStr);
-        // Récupérer l'utilisateur (à partir de la session ou d'un paramètre)
-        Utilisateur utilisateur = utilisateurRepository.findById((long) utilisateurId)
-            .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + utilisateurId));
+        // Récupérer l'utilisateur (à partir de la session ou ds'un paramètre)
+        //Utilisateur utilisateur = utilisateurRepository.findById((long) utilisateurId)
+        //    .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + utilisateurId));
 
 
         String heureDebutStr = creneau.split("-")[0];
