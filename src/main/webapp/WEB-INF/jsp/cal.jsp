@@ -5,6 +5,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.List" %>
 <%@ page import="POJO.Constraints" %>
+<%@ page import="POJO.Utilisateur" %>
 <html>
 <head>
     <title>Calendrier Mensuel</title>
@@ -26,8 +27,15 @@
     </style>
 </head>
 <body>
-    <a href="/inscription" class="btn btn-primary">inscription</a>
-    <a href="/connexion" class="btn btn-primary">Connexion</a>
+    <% 
+    Utilisateur principal = (Utilisateur)session.getAttribute("principal"); 
+    %>
+    <% if (principal == null) { %>
+    <a href="connexion" class="btn btn-primary">Se connecter</a>
+    <a href="inscription" class="btn btn-secondary">Créer un compte</a>
+<% } else { %>
+    <p>Bienvenue, <%= principal.getNom()%>.</p>
+<% } %>
     <div class="container">
         <h1>Calendrier Mensuel</h1>
         <%

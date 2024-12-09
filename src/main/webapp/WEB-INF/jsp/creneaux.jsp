@@ -3,6 +3,7 @@
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.util.LinkedHashMap" %>
 <%@ page import="POJO.Constraints" %>
+<%@ page import="POJO.Utilisateur" %>
 <%
     Constraints constraints = (Constraints) request.getAttribute("constraints");
     LocalDate jour = (LocalDate) request.getAttribute("jour");
@@ -17,9 +18,16 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<a href="/inscription" class="btn btn-primary">inscription</a>
-<a href="/connexion" class="btn btn-primary">Connexion</a>
 <body class="bg-light">
+    <% 
+        Utilisateur principal = (Utilisateur)session.getAttribute("principal"); 
+        %>
+        <% if (principal == null) { %>
+        <a href="connexion" class="btn btn-primary">Se connecter</a>
+        <a href="inscription" class="btn btn-secondary">Créer un compte</a>
+    <% } else { %>
+        <p>Bienvenue, <%= principal.getNom()%>.</p>
+    <% } %>
     <div class="container my-5">
         <h1 class="text-center mb-4">Calendrier des Créneaux du <%= jour.toString() %></h1>
         <table class="table table-striped table-bordered text-center">

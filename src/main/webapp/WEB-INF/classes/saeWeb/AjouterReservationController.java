@@ -42,7 +42,6 @@ public class AjouterReservationController {
         //Long utilisateurId = utilisateur.getsId();
         try {
         LocalDate jour = LocalDate.parse(jourStr);
-        // Récupérer l'utilisateur (à partir de la session ou ds'un paramètre)
         //Utilisateur utilisateur = utilisateurRepository.findById((long) utilisateurId)
         //    .orElseThrow(() -> new IllegalArgumentException("Utilisateur introuvable avec l'ID : " + utilisateurId));
 
