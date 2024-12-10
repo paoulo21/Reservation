@@ -34,10 +34,14 @@
     <a href="connexion" class="btn btn-primary">Se connecter</a>
     <a href="inscription" class="btn btn-secondary">Créer un compte</a>
 <% } else { %>
-    <p>Bienvenue, <%= principal.getNom()%>.</p>
+    <p>
+        Bienvenue, <%= principal.getNom()%>.
+        <a href="infos" class="btn btn-link">Mes informations</a>
+        <a href="mesRendezVous" class="btn btn-link">Mes rendez-vous</a>
+    </p>
 <% } %>
     <div class="container">
-        <h1>Calendrier Mensuel</h1>
+        
         <%
             java.time.LocalDate dateCourante = (java.time.LocalDate) request.getAttribute("dateCourante");
             int premierJourDuMois = (int) request.getAttribute("premierJourDuMois");
@@ -46,6 +50,7 @@
             java.util.Map<String, Integer> reservationCounters = 
                 (java.util.Map<String, Integer>) request.getAttribute("reservationCounters");
         %>
+        <h1>Calendrier <%= constraints.getName() %></h1>
         <!-- Boutons pour changer de mois -->
         <div class="navigation">
             <form method="get" action="/calendrier">

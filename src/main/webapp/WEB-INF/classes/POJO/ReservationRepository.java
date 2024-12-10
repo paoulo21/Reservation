@@ -15,4 +15,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     @Query("SELECT r.dateHeure, COUNT(r) FROM Reservation r GROUP BY r.dateHeure")
     List<Object[]> findUniqueDateHeuresAndCount();
+
+    List<Reservation> findByUtilisateur(Utilisateur utilisateur);
+
 }

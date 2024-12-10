@@ -19,7 +19,7 @@ VALUES (
     'Medecin'              
 );
 
-INSERT INTO utilisateur (nom, prenom, role,mdp) VALUES ('Doe', 'John', 'Admin','azer');
+INSERT INTO utilisateur (nom, prenom, role,mdp) VALUES ('test', 'test', 'Admin','098f6bcd4621d373cade4e832627b4f6');
 INSERT INTO utilisateur (nom, prenom, role,mdp) VALUES ('Smith', 'Alice', 'User','tyui');
 
 

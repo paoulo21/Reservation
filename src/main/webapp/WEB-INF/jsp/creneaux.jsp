@@ -26,7 +26,12 @@
         <a href="connexion" class="btn btn-primary">Se connecter</a>
         <a href="inscription" class="btn btn-secondary">Créer un compte</a>
     <% } else { %>
-        <p>Bienvenue, <%= principal.getNom()%>.</p>
+        <p>
+            Bienvenue, <%= principal.getNom()%>.
+            <a href="infos" class="btn btn-link">Mes informations</a>
+            <a href="mesRendezVous" class="btn btn-link">Mes rendez-vous</a>
+            <a href="calendrier" class="btn btn-link">Calendrier</a>
+        </p>
     <% } %>
     <div class="container my-5">
         <h1 class="text-center mb-4">Calendrier des Créneaux du <%= jour.toString() %></h1>
