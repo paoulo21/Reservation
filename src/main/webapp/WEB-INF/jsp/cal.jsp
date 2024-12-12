@@ -37,7 +37,10 @@
     <p>
         Bienvenue, <%= principal.getNom()%>.
         <a href="infos" class="btn btn-link">Mes informations</a>
-        <a href="mesRendezVous" class="btn btn-link">Mes rendez-vous</a>
+        <a href="mesReservations" class="btn btn-link">Mes Reservations</a>
+        <% if (principal.getRole() == 'Admin') { %>
+            <a href="admin" class="btn btn-link">Panneau Administrateur</a>
+        <% } %>
     </p>
 <% } %>
     <div class="container">

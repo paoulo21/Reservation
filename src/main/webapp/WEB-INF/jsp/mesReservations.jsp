@@ -16,14 +16,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Rendez-vous</title>
+    <title>Mes Reservations</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <a href="infos" class="btn btn-link">Mes informations</a>
 <a href="calendrier" class="btn btn-link">Calendrier</a>
 <div class="container mt-5">
-    <h1 class="mb-4">Mes Rendez-vous</h1>
+    <h1 class="mb-4">Mes Reservations</h1>
 
     <%-- Message de succès si présent --%>
     <% String successMessage = (String) request.getAttribute("successMessage"); %>
@@ -41,7 +41,6 @@
         </div>
     <% } %>
 
-    <%-- Liste des rendez-vous --%>
     <table class="table table-striped">
         <thead>
         <tr>
@@ -60,7 +59,7 @@
                 <td><%= reservation.getDateHeure().toLocalDate() %></td>
                 <td><%= reservation.getDateHeure().toLocalTime() %></td>
                 <td>
-                    <form action="annulerRendezVous" method="post" style="display:inline;">
+                    <form action="annulerReservations" method="post" style="display:inline;">
                         <input type="hidden" name="reservationId" value="<%= reservation.getId() %>">
                         <button type="submit" class="btn btn-danger btn-sm">Annuler</button>
                     </form>
@@ -71,7 +70,7 @@
             } else { 
         %>
             <tr>
-                <td colspan="3" class="text-center">Aucun rendez-vous.</td>
+                <td colspan="3" class="text-center">Aucunes Reservations.</td>
             </tr>
         <% } %>
         </tbody>

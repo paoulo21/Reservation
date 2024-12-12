@@ -18,7 +18,7 @@
 </head>
 <body>
 <a href="calendrier" class="btn btn-link">Calendrier</a>
-<a href="mesRendezVous" class="btn btn-link">Mes rendez-vous</a>
+<a href="mesReservations" class="btn btn-link">Mes Reservations</a>
 <div class="container mt-5">
     <h1 class="mb-4">Mes informations personnelles</h1>
 

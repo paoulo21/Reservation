@@ -19,8 +19,8 @@ VALUES (
     'Medecin'              
 );
 
-INSERT INTO utilisateur (nom, prenom, role,mdp) VALUES ('test', 'test', 'Admin','098f6bcd4621d373cade4e832627b4f6');
-INSERT INTO utilisateur (nom, prenom, role,mdp) VALUES ('Smith', 'Alice', 'User','tyui');
+INSERT INTO utilisateur (nom, prenom, role,mdp,email) VALUES ('test', 'test', 'Admin','098f6bcd4621d373cade4e832627b4f6','test@test.com');
+INSERT INTO utilisateur (nom, prenom, role,mdp,email) VALUES ('Smith', 'Alice', 'User','tyui','user@user.com');
 
 
 INSERT INTO Reservation (id_utilisateur, date_heure) VALUES (1, '2024-11-20 14:00:00');

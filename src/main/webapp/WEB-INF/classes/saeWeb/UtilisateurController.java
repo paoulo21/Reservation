@@ -59,22 +59,19 @@ public class UtilisateurController {
         return "infos";
     }
 
-    // Afficher la synthèse des rendez-vous
-    @GetMapping("/mesRendezVous")
-    public String afficherRendezVous(HttpSession session, Model model) {
+    @GetMapping("/mesReservations")
+    public String afficherReservations(HttpSession session, Model model) {
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("principal");
         if (utilisateur == null) {
             return "redirect:/connexion"; // Redirige si non connecté
         }
 
-        // Charger les rendez-vous de l'utilisateur
         model.addAttribute("reservations", reservationRepository.findByUtilisateur(utilisateur));
-        return "mesRendezVous";
+        return "mesReservations";
     }
 
-    // Annuler un rendez-vous
-    @PostMapping("/annulerRendezVous")
-    public String annulerRendezVous(@RequestParam("reservationId") Long reservationId, HttpSession session, Model model) {
+    @PostMapping("/annulerReservations")
+    public String annulerReservations(@RequestParam("reservationId") Long reservationId, HttpSession session, Model model) {
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("principal");
         if (utilisateur == null) {
             return "redirect:/connexion"; // Redirige si non connecté
@@ -82,13 +79,13 @@ public class UtilisateurController {
 
         Reservation reservation = reservationRepository.findById(reservationId).orElse(null);
         if (reservation != null && reservation.getUtilisateur().getId().equals(utilisateur.getId())) {
-            reservationRepository.delete(reservation); // Supprime le rendez-vous
-            model.addAttribute("successMessage", "Le rendez-vous a été annulé avec succès.");
+            reservationRepository.delete(reservation);
+            model.addAttribute("successMessage", "La Reservation a été annulé avec succès.");
         } else {
-            model.addAttribute("errorMessage", "Impossible d'annuler ce rendez-vous.");
+            model.addAttribute("errorMessage", "Impossible d'annuler cette Reservation.");
         }
 
-        return "redirect:/mesRendezVous"; // Retour à la liste des rendez-vous
+        return "redirect:/mesReservations";
     }
 
     private String md5(String input) {
