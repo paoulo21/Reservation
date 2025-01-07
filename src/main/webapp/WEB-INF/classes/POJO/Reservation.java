@@ -11,6 +11,8 @@ import jakarta.persistence.Table;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "Reservation")
 public class Reservation {
@@ -22,6 +24,7 @@ public class Reservation {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_utilisateur", nullable = false)
+    @JsonIgnore
     private Utilisateur utilisateur;  // Relation Many-to-One (une réservation appartient à un utilisateur)
 
     @Column(name = "date_heure", nullable = false)

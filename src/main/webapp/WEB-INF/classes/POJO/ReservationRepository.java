@@ -18,4 +18,8 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findByUtilisateur(Utilisateur utilisateur);
 
+
+    // Récupérer les réservations futures d'un utilisateur
+    List<Reservation> findByUtilisateurAndDateHeureAfter(Utilisateur utilisateur, LocalDateTime dateHeure);
+
 }
