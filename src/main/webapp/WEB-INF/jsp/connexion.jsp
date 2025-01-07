@@ -11,8 +11,8 @@
         <h1>Connexion</h1>
         <form action="/connexion" method="POST">
             <div class="mb-3">
-                <label for="nom" class="form-label">Nom</label>
-                <input type="text" class="form-control" id="nom" name="nom" required>
+                <label for="mail" class="form-label">Mail</label>
+                <input type="text" class="form-control" id="mail" name="mail" required>
             </div>
             <div class="mb-3">
                 <label for="mdp" class="form-label">Mot de passe</label>

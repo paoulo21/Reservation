@@ -50,13 +50,13 @@ public class ConnexionController {
 
     // Traitement de la connexion
     @PostMapping("/connexion")
-    public String connecterUtilisateur(@RequestParam("nom") String nom, @RequestParam("mdp") String mdp, HttpSession session, Model model) {
-        Utilisateur utilisateur = utilisateurRepository.findByNomAndMdp(nom, md5(mdp));
+    public String connecterUtilisateur(@RequestParam("mail") String mail, @RequestParam("mdp") String mdp, HttpSession session, Model model) {
+        Utilisateur utilisateur = utilisateurRepository.findByemailAndMdp(mail, md5(mdp));
         if (utilisateur != null) {
             session.setAttribute("principal", utilisateur);
             return "redirect:/calendrier";
         } else {
-            model.addAttribute("errorMessage", "Nom ou mot de passe incorrect.");
+            model.addAttribute("errorMessage", "Mail ou mot de passe incorrect.");
             return "connexion"; // Redirection en cas d'échec de connexion
         }
     }

@@ -11,6 +11,10 @@
         <h1>Inscription</h1>
         <form action="/inscription" method="POST">
             <div class="mb-3">
+                <label for="email" class="form-label">EMail</label>
+                <input type="text" class="form-control" id="email" name="email" required>
+            </div>
+            <div class="mb-3">
                 <label for="nom" class="form-label">Nom</label>
                 <input type="text" class="form-control" id="nom" name="nom" required>
             </div>
