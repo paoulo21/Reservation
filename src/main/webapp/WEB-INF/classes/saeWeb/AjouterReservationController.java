@@ -1,6 +1,8 @@
 package saeWeb;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import POJO.Reservation;
 import POJO.ReservationRepository;
 import POJO.Utilisateur;
 import POJO.UtilisateurRepository;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 
 import java.time.LocalDate;
@@ -24,6 +27,9 @@ public class AjouterReservationController {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    private JavaMailSender sender;
 
 
     @PostMapping("/ajouterReservation")
@@ -53,6 +59,14 @@ public class AjouterReservationController {
         reservation.setDateHeure(LocalDateTime.of(jour, heureDebut));
         reservation.setUtilisateur(utilisateur);
         reservationRepository.save(reservation);
+
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom("paullouis.gomis.etu@univ-lille.fr");
+        helper.setTo(utilisateur.getEmail());
+        helper.setSubject("Confirmation de réservation");
+        helper.setText("Votre réservation pour le "+jourStr+" de " + creneau +" a été confirmé !" );
+        sender.send(message);
 
          // Ajouter des attributs pour la vue de succès
         model.addAttribute("jour", jourStr);
