@@ -48,10 +48,14 @@ public class CreneauxController {
         Map<String, Integer> reservationsParCreneau = new LinkedHashMap<>(); // Remplacez par votre logique
 
         for (Object[] result : reservationsData) {
-            String temps = ((LocalDateTime) result[0]).toLocalTime().toString();  // La date et l'heure unique
+            LocalDateTime dateTime = (LocalDateTime) result[0];  // La date et l'heure unique
             Long count = (Long) result[1];  // Le nombre de réservations pour cette dateHeure
 
-            reservationsParCreneau.put(temps, count.intValue());
+            // Vérifiez si la date correspond au jour spécifié
+            if (dateTime.toLocalDate().isEqual(jour)) {
+                String temps = dateTime.toLocalTime().toString(); // Gardez seulement l'heure
+                reservationsParCreneau.put(temps, count.intValue());
+            }
         }
         System.out.println("///////////");
         // Générer les créneaux horaires complets
