@@ -13,12 +13,12 @@
 
         <div class="list-group">
             <!-- Lien vers la page Toutes Informations -->
-            <a href="/admin/toutesinfos" class="list-group-item list-group-item-action">
+            <a href="/admin/toutesInfos" class="list-group-item list-group-item-action">
                 Gérer les informations des utilisateurs
             </a>
 
             <!-- Lien vers la page Toutes Réservations -->
-            <a href="/admin/toutesreservations" class="list-group-item list-group-item-action">
+            <a href="/admin/toutesReservations" class="list-group-item list-group-item-action">
                 Gérer les réservations
             </a>
         </div>

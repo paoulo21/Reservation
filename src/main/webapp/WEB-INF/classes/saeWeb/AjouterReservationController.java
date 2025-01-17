@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import POJO.Reservation;
 import POJO.ReservationRepository;
 import POJO.Utilisateur;
-import POJO.UtilisateurRepository;
 import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 
@@ -24,9 +23,6 @@ public class AjouterReservationController {
 
     @Autowired
     private ReservationRepository reservationRepository;
-
-    @Autowired
-    private UtilisateurRepository utilisateurRepository;
 
     @Autowired
     private JavaMailSender sender;

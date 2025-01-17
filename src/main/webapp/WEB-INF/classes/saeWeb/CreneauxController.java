@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import POJO.Constraints;
 import POJO.ConstraintsRepository;
-import POJO.Reservation;
 import POJO.ReservationRepository;
 
 import java.time.LocalDate;
