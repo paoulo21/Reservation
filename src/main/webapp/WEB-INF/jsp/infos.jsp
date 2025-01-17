@@ -31,7 +31,7 @@
     <% } %>
 
     <%-- Formulaire pour afficher et modifier les informations --%>
-    <form action="modifierInfos" method="post">
+    <form action="modifierInfos" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <label for="nom" class="form-label">Nom</label>
             <input type="text" id="nom" name="nom" class="form-control" value="<%= utilisateur.getNom() %>" required>
@@ -43,6 +43,11 @@
         <div class="mb-3">
             <label for="mdp" class="form-label">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
             <input type="password" id="mdp" name="mdp" class="form-control">
+        </div>
+        <div class="mb-3">
+            <img src="/utilisateurs/${utilisateur.id}/image" alt="Image de Profil" />
+            <label for="image" class="form-label">Image de Profil</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/*">
         </div>
         <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
     </form>

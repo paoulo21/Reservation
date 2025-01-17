@@ -4,12 +4,19 @@ import POJO.UtilisateurRepository;
 import POJO.Reservation;
 import POJO.ReservationRepository;
 import POJO.Utilisateur;
+
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -39,8 +46,9 @@ public class UtilisateurController {
             @RequestParam("nom") String nom,
             @RequestParam("prenom") String prenom,
             @RequestParam("mdp") String mdp,
+            @RequestParam MultipartFile image,
             HttpSession session,
-            Model model) {
+            Model model) throws IOException {
         Utilisateur utilisateur = (Utilisateur) session.getAttribute("principal");
         if (utilisateur == null) {
             return "redirect:/connexion"; // Redirige si non connecté
@@ -49,6 +57,9 @@ public class UtilisateurController {
         // Mise à jour des informations
         utilisateur.setNom(nom);
         utilisateur.setPrenom(prenom);
+        if (image != null && !image.isEmpty()) {
+            utilisateur.setImageProfil(image.getBytes());
+        }
         if (mdp != null && !mdp.isEmpty()) {
             utilisateur.setMdp(md5(mdp));
         }
@@ -86,6 +97,20 @@ public class UtilisateurController {
         }
 
         return "redirect:/mesReservations";
+    }
+
+    @GetMapping("/utilisateurs/{id}/image")
+    public ResponseEntity<byte[]> getImage(HttpSession session, @PathVariable Long id) {
+        Utilisateur utilisateur = (Utilisateur) session.getAttribute("principal");
+        byte[] imageBytes = utilisateur.getImageProfil();
+
+        if (imageBytes != null) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG) // Changez selon le type d'image
+                    .body(imageBytes);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     private String md5(String input) {

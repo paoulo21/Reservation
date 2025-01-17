@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
@@ -38,6 +39,10 @@ public class Utilisateur {
     // Relation One-to-Many (un utilisateur peut avoir plusieurs réservations)
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
+
+    @Lob // Annoter pour indiquer que c'est un BLOB
+    @Column(name = "image_profil")
+    private byte[] imageProfil;
 
     // Getters et Setters
     public Long getId() {
@@ -96,5 +101,12 @@ public class Utilisateur {
         this.email = email;
     }
 
+    public byte[] getImageProfil() {
+        return imageProfil;
+    }
+
+    public void setImageProfil(byte[] imageProfil) {
+        this.imageProfil = imageProfil;
+    }
     
 }

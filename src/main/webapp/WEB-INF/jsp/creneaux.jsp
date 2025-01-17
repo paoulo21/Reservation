@@ -33,6 +33,7 @@
         <% if (principal.getRole() == "Admin") { %>
             <a href="admin" class="btn btn-link">Panneau Administrateur</a>
         <% } %>
+        <img src="/utilisateurs/${utilisateur.id}/image" alt="Image de Profil" style="max-width: 200px; height: auto;"/>
     </p>
 <% } %>
     <div class="container my-5">

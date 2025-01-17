@@ -19,21 +19,25 @@
 <body>
 <div class="container mt-5">
     <h1 class="mb-4">Modifier l'utilisateur</h1>
-    <form action="enregistrerModification" method="post">
+    <form action="enregistrerModification" method="post" enctype="multipart/form-data">
         <input type="hidden" name="id" value="<%= utilisateur.getId() %>">
         <input type="hidden" name="mdp" value="<%= utilisateur.getMdp() %>">
+        
         <div class="mb-3">
             <label for="nom" class="form-label">Nom</label>
             <input type="text" id="nom" name="nom" class="form-control" value="<%= utilisateur.getNom() %>" required>
         </div>
+        
         <div class="mb-3">
             <label for="prenom" class="form-label">Prénom</label>
             <input type="text" id="prenom" name="prenom" class="form-control" value="<%= utilisateur.getPrenom() %>" required>
         </div>
+        
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" id="email" name="email" class="form-control" value="<%= utilisateur.getEmail() %>" required>
         </div>
+        
         <div class="mb-3">
             <label for="role" class="form-label">Rôle</label>
             <select id="role" name="role" class="form-select" required>
@@ -41,6 +45,12 @@
                 <option value="admin" <%= utilisateur.getRole().equals("admin") ? "selected" : "" %>>Admin</option>
             </select>
         </div>
+
+        <div class="mb-3">
+            <label for="image" class="form-label">Image de Profil</label>
+            <input type="file" id="image" name="image" class="form-control" accept="image/*">
+        </div>
+
         <button type="submit" class="btn btn-primary">Enregistrer</button>
         <a href="toutesInfos" class="btn btn-secondary">Annuler</a>
     </form>
