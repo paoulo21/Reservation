@@ -32,7 +32,7 @@ public class ConnexionController {
     }
 
     // Traitement du formulaire d'inscription
-    @PostMapping("/inscription")
+    /*@PostMapping("/inscription")
     public String enregistrerUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, HttpSession session, Model model) {
         if (utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
             model.addAttribute("errorMessage", "L'email est déjà utilisé. Veuillez en choisir un autre.");
@@ -43,19 +43,18 @@ public class ConnexionController {
         utilisateurRepository.save(utilisateur);
         session.setAttribute("principal", utilisateur);
         return "redirect:/calendrier";
-    }
+    }*/
 
-    @PostMapping("/enregistrerModification")
-    public String enregistrerUtilisateur(@RequestParam("id") Long id, 
+    @PostMapping("/inscription")
+    public String enregistrerUtilisateur(
                                         @RequestParam("mdp") String mdp,
                                         @RequestParam("image") MultipartFile imageFile, 
                                         @RequestParam("nom") String nom,
                                         @RequestParam("prenom") String prenom,
                                         @RequestParam("email") String email,
-                                        @RequestParam("role") String role,
-                                        Model model) {
+                                        Model model, HttpSession session) {
         Utilisateur utilisateur = new Utilisateur();
-        
+        utilisateur.setMdp(mdp);
         utilisateur.setNom(nom);
         utilisateur.setPrenom(prenom);
         utilisateur.setEmail(email);
@@ -73,7 +72,7 @@ public class ConnexionController {
         }
 
         utilisateurRepository.save(utilisateur);
-        model.addAttribute("successMessage", "Utilisateur modifié avec succès !");
+        session.setAttribute("principal", utilisateur);
         return "redirect:/calendrier";
     }
 
