@@ -41,6 +41,7 @@
             <th>Prénom</th>
             <th>Email</th>
             <th>Rôle</th>
+            <th>Image</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -53,6 +54,7 @@
                     <td><%= u.getPrenom() %></td>
                     <td><%= u.getEmail() %></td>
                     <td><%= u.getRole() %></td>
+                    <td><img src="/utilisateurs/<%= u.getId() %>/image" alt="Image de Profil" style="max-width: 200px; height: auto;"/></td>
                     <td>
                         <form action="modifierUtilisateur" method="post" class="d-inline">
                             <input type="hidden" name="id" value="<%= u.getId() %>">

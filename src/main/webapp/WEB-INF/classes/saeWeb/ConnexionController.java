@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,20 +29,6 @@ public class ConnexionController {
         model.addAttribute("utilisateur", new Utilisateur());
         return "inscription";
     }
-
-    // Traitement du formulaire d'inscription
-    /*@PostMapping("/inscription")
-    public String enregistrerUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, HttpSession session, Model model) {
-        if (utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
-            model.addAttribute("errorMessage", "L'email est déjà utilisé. Veuillez en choisir un autre.");
-            return "inscription"; // Retourner à la page d'inscription
-        }
-        utilisateur.setMdp(md5(utilisateur.getMdp()));
-        utilisateur.setRole("User");
-        utilisateurRepository.save(utilisateur);
-        session.setAttribute("principal", utilisateur);
-        return "redirect:/calendrier";
-    }*/
 
     @PostMapping("/inscription")
     public String enregistrerUtilisateur(

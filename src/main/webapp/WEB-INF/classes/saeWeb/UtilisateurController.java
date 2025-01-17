@@ -6,6 +6,7 @@ import POJO.ReservationRepository;
 import POJO.Utilisateur;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -101,16 +102,21 @@ public class UtilisateurController {
 
     @GetMapping("/utilisateurs/{id}/image")
     public ResponseEntity<byte[]> getImage(HttpSession session, @PathVariable Long id) {
-        Utilisateur utilisateur = (Utilisateur) session.getAttribute("principal");
-        byte[] imageBytes = utilisateur.getImageProfil();
+        Optional<Utilisateur> optionalUtilisateur = utilisateurRepository.findById(id);
 
-        if (imageBytes != null) {
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG) // Changez selon le type d'image
-                    .body(imageBytes);
-        } else {
-            return ResponseEntity.notFound().build();
+        if (optionalUtilisateur.isPresent()) {
+            Utilisateur utilisateur = optionalUtilisateur.get();
+            byte[] imageBytes = utilisateur.getImageProfil();
+            // Utilisez imageBytes comme nécessaire
+            if (imageBytes != null) {
+                return ResponseEntity.ok()
+                        .contentType(MediaType.IMAGE_JPEG) // Changez selon le type d'image
+                        .body(imageBytes);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         }
+        return null;
     }
 
     private String md5(String input) {
