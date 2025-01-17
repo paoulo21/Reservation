@@ -40,7 +40,7 @@
         <a href="infos" class="btn btn-link">Mes informations</a>
         <a href="mesReservations" class="btn btn-link">Mes Reservations</a>
         <a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
-        <% if (principal.getRole() == "Admin") { %>
+        <% if (principal.getRole().equals("Admin")) { %>
             <a href="admin" class="btn btn-link">Panneau Administrateur</a>
         <% } %>
         <img src="/utilisateurs/${principal.id}/image" alt="Image de Profil" style="max-width: 200px; height: auto;"/>
