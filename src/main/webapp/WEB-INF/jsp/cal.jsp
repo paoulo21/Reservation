@@ -33,11 +33,13 @@
     <% if (principal == null) { %>
     <a href="connexion" class="btn btn-primary">Se connecter</a>
     <a href="inscription" class="btn btn-secondary">Créer un compte</a>
+    
 <% } else { %>
     <p>
         Bienvenue, <%= principal.getNom()%>.
         <a href="infos" class="btn btn-link">Mes informations</a>
         <a href="mesReservations" class="btn btn-link">Mes Reservations</a>
+        <a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
         <% if (principal.getRole() == "Admin") { %>
             <a href="admin" class="btn btn-link">Panneau Administrateur</a>
         <% } %>

@@ -8,9 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import POJO.Utilisateur;
@@ -59,6 +57,12 @@ public class ConnexionController {
             model.addAttribute("errorMessage", "Mail ou mot de passe incorrect.");
             return "connexion"; // Redirection en cas d'échec de connexion
         }
+    }
+
+    @GetMapping("/deconnexion")
+    public String deconnexion(HttpSession session) {
+        session.invalidate(); // Invalide la session
+        return "redirect:/connexion"; // Redirige vers la page de connexion
     }
 
     // Fonction pour encoder un mot de passe avec MD5

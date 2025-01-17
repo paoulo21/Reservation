@@ -19,6 +19,7 @@
 <body>
 <a href="calendrier" class="btn btn-link">Calendrier</a>
 <a href="mesReservations" class="btn btn-link">Mes Reservations</a>
+<a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
 <div class="container mt-5">
     <h1 class="mb-4">Mes informations personnelles</h1>
 
