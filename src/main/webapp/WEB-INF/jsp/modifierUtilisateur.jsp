@@ -41,8 +41,8 @@
         <div class="mb-3">
             <label for="role" class="form-label">Rôle</label>
             <select id="role" name="role" class="form-select" required>
-                <option value="user" <%= utilisateur.getRole().equals("user") ? "selected" : "" %>>Utilisateur</option>
-                <option value="admin" <%= utilisateur.getRole().equals("admin") ? "selected" : "" %>>Admin</option>
+                <option value="User" <%= utilisateur.getRole().equals("User") ? "selected" : "" %>>Utilisateur</option>
+                <option value="Admin" <%= utilisateur.getRole().equals("Admin") ? "selected" : "" %>>Admin</option>
             </select>
         </div>
 

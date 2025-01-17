@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Inscription</h1>
-        <form action="/inscription" method="POST">
+        <form action="/inscription" method="POST" enctype="multipart/form-data">
             <div class="mb-3">
                 <label for="email" class="form-label">EMail</label>
                 <input type="text" class="form-control" id="email" name="email" required>
@@ -26,8 +26,15 @@
                 <label for="mdp" class="form-label">Mot de passe</label>
                 <input type="password" class="form-control" id="mdp" name="mdp" required>
             </div>
+            <div class="mb-3">
+                <label for="image" class="form-label">Image de Profil</label>
+                <input type="file" id="image" name="image" class="form-control" accept="image/*">
+            </div>
             <button type="submit" class="btn btn-primary">S'inscrire</button>
-            <a href="/connexion" class="btn btn-secondary">Connexion</a>
+            <a href="/connexion" class="btn btn-secondary">Se connecter</a>
+            <div class="alert alert-danger mt-3" style="display: ${not empty errorMessage ? 'block' : 'none'};">
+                ${errorMessage}
+            </div>
         </form>
     </div>
 </body>

@@ -32,7 +32,7 @@ public class Utilisateur {
     @Column(name = "mdp", nullable = false)
     private String mdp;
 
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
     // Relation One-to-Many (un utilisateur peut avoir plusieurs réservations)

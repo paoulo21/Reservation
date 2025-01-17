@@ -1,5 +1,6 @@
 package saeWeb;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import POJO.Reservation;
 import POJO.ReservationRepository;
@@ -65,9 +67,33 @@ public class AdminController {
         return "modifierUtilisateur"; // Page JSP pour le formulaire de modification
     }
 
-    // Enregistrer les modifications d'un utilisateur
     @PostMapping("/enregistrerModification")
-    public String enregistrerModification(@ModelAttribute Utilisateur utilisateur, Model model) {
+    public String enregistrerModification(@RequestParam("id") Long id, 
+                                        @RequestParam("mdp") String mdp,
+                                        @RequestParam("image") MultipartFile imageFile, 
+                                        @RequestParam("nom") String nom,
+                                        @RequestParam("prenom") String prenom,
+                                        @RequestParam("email") String email,
+                                        @RequestParam("role") String role,
+                                        Model model) {
+        Utilisateur utilisateur = utilisateurRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Utilisateur non trouvé"));
+        
+        utilisateur.setNom(nom);
+        utilisateur.setPrenom(prenom);
+        utilisateur.setEmail(email);
+        utilisateur.setRole(role);
+        
+        // Gérer l'image
+        if (!imageFile.isEmpty()) {
+            try {
+                utilisateur.setImageProfil(imageFile.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                model.addAttribute("errorMessage", "Erreur lors de l'enregistrement de l'image.");
+                return "redirect:/admin/toutesInfos"; // Redirection en cas d'erreur
+            }
+        }
+
         utilisateurRepository.save(utilisateur);
         model.addAttribute("successMessage", "Utilisateur modifié avec succès !");
         return "redirect:/admin/toutesInfos";

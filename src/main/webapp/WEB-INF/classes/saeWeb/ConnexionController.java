@@ -1,5 +1,6 @@
 package saeWeb;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import POJO.Utilisateur;
 import POJO.UtilisateurRepository;
@@ -31,12 +33,47 @@ public class ConnexionController {
 
     // Traitement du formulaire d'inscription
     @PostMapping("/inscription")
-    public String enregistrerUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, HttpSession session) {
-        // Encodage du mot de passe en MD5
+    public String enregistrerUtilisateur(@ModelAttribute("utilisateur") Utilisateur utilisateur, HttpSession session, Model model) {
+        if (utilisateurRepository.existsByEmail(utilisateur.getEmail())) {
+            model.addAttribute("errorMessage", "L'email est déjà utilisé. Veuillez en choisir un autre.");
+            return "inscription"; // Retourner à la page d'inscription
+        }
         utilisateur.setMdp(md5(utilisateur.getMdp()));
         utilisateur.setRole("User");
         utilisateurRepository.save(utilisateur);
         session.setAttribute("principal", utilisateur);
+        return "redirect:/calendrier";
+    }
+
+    @PostMapping("/enregistrerModification")
+    public String enregistrerUtilisateur(@RequestParam("id") Long id, 
+                                        @RequestParam("mdp") String mdp,
+                                        @RequestParam("image") MultipartFile imageFile, 
+                                        @RequestParam("nom") String nom,
+                                        @RequestParam("prenom") String prenom,
+                                        @RequestParam("email") String email,
+                                        @RequestParam("role") String role,
+                                        Model model) {
+        Utilisateur utilisateur = new Utilisateur();
+        
+        utilisateur.setNom(nom);
+        utilisateur.setPrenom(prenom);
+        utilisateur.setEmail(email);
+        utilisateur.setRole("User");
+        
+        // Gérer l'image
+        if (!imageFile.isEmpty()) {
+            try {
+                utilisateur.setImageProfil(imageFile.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+                model.addAttribute("errorMessage", "Erreur lors de l'enregistrement de l'image.");
+                return "redirect:/calendrier"; // Redirection en cas d'erreur
+            }
+        }
+
+        utilisateurRepository.save(utilisateur);
+        model.addAttribute("successMessage", "Utilisateur modifié avec succès !");
         return "redirect:/calendrier";
     }
 
