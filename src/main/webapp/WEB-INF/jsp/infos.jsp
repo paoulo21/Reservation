@@ -45,7 +45,7 @@
             <input type="password" id="mdp" name="mdp" class="form-control">
         </div>
         <div class="mb-3">
-            <img src="/utilisateurs/${utilisateur.id}/image" alt="Image de Profil" />
+            <img src="/utilisateurs/${utilisateur.id}/image" alt="Image de Profil" style="max-width: 200px; height: auto;"/>
             <label for="image" class="form-label">Image de Profil</label>
             <input type="file" id="image" name="image" class="form-control" accept="image/*">
         </div>
