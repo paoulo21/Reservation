@@ -74,6 +74,9 @@
         <% } %>
         </tbody>
     </table>
+    <div class="text-center mt-4">
+        <a href="/admin" class="btn btn-primary">Retour au tableau de bord</a>
+    </div>
 </div>
 </body>
 </html>

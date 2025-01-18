@@ -9,6 +9,7 @@
 </head>
 <body>
     <div class="container mt-5">
+    <a href="/calendrier" class="btn btn-link">Calendrier</a>
         <h1 class="mb-4">Bienvenue Administrateur</h1>
 
         <div class="list-group">

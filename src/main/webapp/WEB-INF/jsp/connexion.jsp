@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class="container">
+    <a href="calendrier" class="btn btn-link">Calendrier</a>
         <h1>Connexion</h1>
         <form action="/connexion" method="POST">
             <div class="mb-3">

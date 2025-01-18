@@ -33,6 +33,7 @@
 <% } else { %>
     <p>
         Bienvenue, <%= principal.getNom()%>.
+        <a href="calendrier" class="btn btn-link">Calendrier</a>
         <a href="infos" class="btn btn-link">Mes informations</a>
         <a href="mesReservations" class="btn btn-link">Mes Reservations</a>
         <a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
