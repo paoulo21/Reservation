@@ -2,6 +2,8 @@ package saeWeb;
 
 import POJO.Constraints;
 import POJO.ConstraintsRepository;
+import POJO.CreneauSuppr;
+import POJO.CreneauSupprRepository;
 import POJO.Reservation;
 import POJO.ReservationRepository;
 
@@ -16,6 +18,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class CalendrierController {
@@ -24,10 +27,10 @@ public class CalendrierController {
     private ConstraintsRepository constraintsRepository;
 
     @Autowired
-    private ReservationRepository reservationRepository;  // Injecter le repository
+    private ReservationRepository reservationRepository;
 
-    //@Autowired
-    //private CalendrierDAO calendrierDAO; // Remplacer par un Repository si DAO est encore manuel
+    @Autowired
+    private CreneauSupprRepository creneauSupprRepository;
 
     private Map<String, Integer> reservationCounters = new HashMap<>();
 
@@ -36,45 +39,26 @@ public class CalendrierController {
             @RequestParam(name = "mois", required = false) String moisParam,
             Model model) {
 
-        // Calculer la date courante en fonction du paramètre "mois"
         LocalDate dateCourante = (moisParam != null) ? LocalDate.parse(moisParam) : LocalDate.now();
 
-        // Calcul des informations nécessaires pour l'affichage du calendrier
         int premierJourDuMois = dateCourante.withDayOfMonth(1).getDayOfWeek().getValue();
         int nombreDeJours = dateCourante.lengthOfMonth();
 
-        // Récupérer les contraintes depuis la base
         Constraints constraints = constraintsRepository.findById(2).orElse(null);
 
-        // Charger les créneaux de réservation
         reservationCounters = chargerCreneaux(dateCourante);
 
-        // Ajouter les données au modèle
+        Map<LocalDate, Long> deletedCounters = chargerCreneauxSuppr(dateCourante);
+        
         model.addAttribute("dateCourante", dateCourante);
         model.addAttribute("premierJourDuMois", premierJourDuMois);
         model.addAttribute("nombreDeJours", nombreDeJours);
         model.addAttribute("constraints", constraints);
         model.addAttribute("reservationCounters", reservationCounters);
+        model.addAttribute("deletedCounters", deletedCounters);
 
-        // Retourner le nom de la vue JSP ou Thymeleaf
-        return "cal"; // Assurez-vous que "cal.jsp" ou équivalent existe dans vos templates
+        return "cal";
     }
-
-    /*@PostMapping("/calendrierr")
-    public String enregistrerReservation(
-            @RequestParam("jour") String jourClique,
-            @RequestParam("mois") String mois) {
-
-        if (jourClique != null) {
-            LocalDate dateClique = LocalDate.parse(jourClique);
-            calendrierDAO.incrementerClickCounter(dateClique);
-        }
-
-        // Redirection vers la même page après l'action POST
-        return "redirect:/calendrier?mois=" + mois;
-    }*/
-
-    // Remplacer le DAO par le repository
     public Map<String, Integer> chargerCreneaux(LocalDate date) {
         Map<String, Integer> reservationCounters = new HashMap<>();
         
@@ -84,6 +68,7 @@ public class CalendrierController {
         // Utiliser le repository pour récupérer les réservations entre les deux dates
         List<Reservation> reservations = reservationRepository.findByDateHeureBetween(premierJour, dernierJour);
 
+        
         // Organiser les résultats dans le format attendu (jour -> nombre de réservations)
         for (Reservation reservation : reservations) {
             LocalDate jour = reservation.getDateHeure().toLocalDate();  // Assurez-vous que vous récupérez la date de réservation
@@ -92,4 +77,19 @@ public class CalendrierController {
 
         return reservationCounters;
     }
+    private Map<LocalDate, Long> chargerCreneauxSuppr(LocalDate dateCourante) {
+    LocalDate premierJour = dateCourante.withDayOfMonth(1);
+    LocalDate dernierJour = dateCourante.withDayOfMonth(dateCourante.lengthOfMonth());
+
+    List<CreneauSuppr> creneauxSuppr = creneauSupprRepository.findAll();
+
+    return creneauxSuppr.stream()
+            .filter(c -> !c.getDateHeure().toLocalDate().isBefore(premierJour) &&
+                         !c.getDateHeure().toLocalDate().isAfter(dernierJour))
+            .collect(Collectors.groupingBy(
+                    c -> c.getDateHeure().toLocalDate(),
+                    Collectors.counting()
+            ));
+}
+
 }

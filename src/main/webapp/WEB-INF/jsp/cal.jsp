@@ -53,6 +53,7 @@
             int premierJourDuMois = (int) request.getAttribute("premierJourDuMois");
             int nombreDeJours = (int) request.getAttribute("nombreDeJours");
             Constraints constraints = (Constraints) request.getAttribute("constraints");
+            java.util.Map<LocalDate, Long> deletedCounters = (java.util.Map<LocalDate, Long>) request.getAttribute("deletedCounters");
             java.util.Map<String, Integer> reservationCounters = 
                 (java.util.Map<String, Integer>) request.getAttribute("reservationCounters");
         %>
@@ -99,7 +100,7 @@
 
                             long maxReservations = isEnabledDay ? 
                                 (Duration.between(constraints.getStart(), constraints.getEnd()).toMinutes() 
-                                / constraints.getMinutesBetweenSlots() * constraints.getMaxPerSlot()) : 0;
+                                / constraints.getMinutesBetweenSlots() * constraints.getMaxPerSlot())-(deletedCounters.getOrDefault(currentDate,new Long(0))*constraints.getMaxPerSlot()) : 0;
 
                             int currentReservations = reservationCounters.getOrDefault(currentDate.toString(), 0);
                     %>

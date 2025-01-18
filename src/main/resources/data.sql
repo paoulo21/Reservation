@@ -25,3 +25,5 @@ INSERT INTO utilisateur (nom, prenom, role,mdp,email) VALUES ('Smith', 'Alice', 
 
 INSERT INTO Reservation (id_utilisateur, date_heure) VALUES (1, '2025-01-20 14:00:00');
 INSERT INTO Reservation (id_utilisateur, date_heure) VALUES (2, '2025-01-18 15:30:00');
+
+insert into CRENEAUX_SUPPR (date_heure) values ('2025-01-21 14:00')

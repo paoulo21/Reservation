@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import POJO.Constraints;
 import POJO.ConstraintsRepository;
+import POJO.CreneauSuppr;
+import POJO.CreneauSupprRepository;
 import POJO.ReservationRepository;
 
 import java.time.LocalDate;
@@ -17,6 +19,7 @@ import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class CreneauxController {
@@ -26,6 +29,9 @@ public class CreneauxController {
 
     @Autowired
     private ReservationRepository reservationRepository;
+
+    @Autowired
+    private CreneauSupprRepository creneauSupprRepository;
 
     @GetMapping("/creneaux")
     public String afficherCreneaux(
@@ -44,7 +50,7 @@ public class CreneauxController {
         }
 
         List<Object[]> reservationsData = reservationRepository.findUniqueDateHeuresAndCount();
-        Map<String, Integer> reservationsParCreneau = new LinkedHashMap<>(); // Remplacez par votre logique
+        Map<String, Integer> reservationsParCreneau = new LinkedHashMap<>();
 
         for (Object[] result : reservationsData) {
             LocalDateTime dateTime = (LocalDateTime) result[0];  // La date et l'heure unique
@@ -70,10 +76,13 @@ public class CreneauxController {
             start = nextSlot;
         }
 
+        List<CreneauSuppr> creneauxSuppr = creneauSupprRepository.findByDay(jour);
+
         // Ajouter les données au modèle
         model.addAttribute("constraints", constraints);
         model.addAttribute("jour", jour);
         model.addAttribute("creneauxComplets", creneauxComplets);
+        model.addAttribute("creneauxSuppr", creneauxSuppr);
 
         return "creneaux"; // Retourne la vue `creneaux.jsp`
     }

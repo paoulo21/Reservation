@@ -1,13 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.Map" %>
+<%@ page import="java.util.List" %>
 <%@ page import="java.time.LocalDate" %>
+<%@ page import="java.time.LocalTime" %>
+<%@ page import="java.time.LocalDateTime" %>
 <%@ page import="java.util.LinkedHashMap" %>
 <%@ page import="POJO.Constraints" %>
+<%@ page import="POJO.CreneauSuppr" %>
 <%@ page import="POJO.Utilisateur" %>
 <%
     Constraints constraints = (Constraints) request.getAttribute("constraints");
     LocalDate jour = (LocalDate) request.getAttribute("jour");
     Map<String, Integer> creneauxComplets = (Map<String, Integer>) request.getAttribute("creneauxComplets");
+    List<CreneauSuppr> creneauxSuppr = (List<CreneauSuppr>) request.getAttribute("creneauxSuppr");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -51,8 +56,11 @@
                 <%
                     for (Map.Entry<String, Integer> entry : creneauxComplets.entrySet()) {
                         String creneau = entry.getKey();
+                        String[] creneauTab = creneau.split("-");
                         int reservations = entry.getValue();
-                %>
+                        System.out.println(creneauTab[0]);
+                if (creneauxSuppr.stream().noneMatch(creneauSuppr -> 
+        creneauSuppr.getDateHeure().toLocalTime().equals(LocalTime.parse(creneauTab[0] + ":00")))){%>
                 <tr>
                     <td><%= creneau %></td>
                     <td><%= reservations %> / <%= constraints.getMaxPerSlot() %></td>
@@ -69,6 +77,7 @@
                     </td>
                 </tr>
                 <%
+                }
                     }
                 %>
             </tbody>
@@ -77,7 +86,6 @@
             <a href="calendrier" class="btn btn-secondary">Retour au calendrier</a>
         </div>
     </div>
-    <!-- Bootstrap JS and dependencies -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
