@@ -50,6 +50,9 @@
                     <th>Créneau</th>
                     <th>Réservations</th>
                     <th>Action</th>
+                    <% if (principal != null && principal.getRole().equals("Admin")) { %>
+                        <th>Supprimer</th>
+                    <% } %>
                 </tr>
             </thead>
             <tbody>
@@ -58,9 +61,10 @@
                         String creneau = entry.getKey();
                         String[] creneauTab = creneau.split("-");
                         int reservations = entry.getValue();
-                        System.out.println(creneauTab[0]);
-                if (creneauxSuppr.stream().noneMatch(creneauSuppr -> 
-        creneauSuppr.getDateHeure().toLocalTime().equals(LocalTime.parse(creneauTab[0] + ":00")))){%>
+                        
+                        if (creneauxSuppr.stream().noneMatch(creneauSuppr -> 
+                                creneauSuppr.getDateHeure().toLocalTime().equals(LocalTime.parse(creneauTab[0] + ":00")))) {
+                %>
                 <tr>
                     <td><%= creneau %></td>
                     <td><%= reservations %> / <%= constraints.getMaxPerSlot() %></td>
@@ -75,9 +79,17 @@
                             <span class="badge bg-danger">Complet</span>
                         <% } %>
                     </td>
+                    <% if (principal != null && principal.getRole().equals("Admin")) { %>
+                        <td>
+                            <form method="post" action="supprimerCreneau">
+                                <input type="hidden" name="dateHeure" value="<%= jour.toString() + "T" + creneauTab[0] + ":00" %>">
+                                <button type="submit" class="btn btn-danger">Supprimer</button>
+                            </form>
+                        </td>
+                    <% } %>
                 </tr>
                 <%
-                }
+                        }
                     }
                 %>
             </tbody>

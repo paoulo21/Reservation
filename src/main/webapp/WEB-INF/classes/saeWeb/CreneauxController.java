@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import POJO.Constraints;
@@ -19,7 +20,6 @@ import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 public class CreneauxController {
@@ -85,5 +85,15 @@ public class CreneauxController {
         model.addAttribute("creneauxSuppr", creneauxSuppr);
 
         return "creneaux"; // Retourne la vue `creneaux.jsp`
+    }
+    @PostMapping("/supprimerCreneau")
+    public String supprimerCreneau(@RequestParam("dateHeure") String dateHeureStr) {
+        LocalDateTime dateHeure = LocalDateTime.parse(dateHeureStr);
+        CreneauSuppr creneauSuppr = new CreneauSuppr();
+        creneauSuppr.setDateHeure(dateHeure);
+
+        creneauSupprRepository.save(creneauSuppr);
+
+        return "redirect:/calendrier";
     }
 }
