@@ -49,7 +49,8 @@ public class CreneauxController {
             jour = LocalDate.now();
         }
         if (!constraints.getEnabledDays().contains(jour.getDayOfWeek().getValue())) {
-            return "redirect:/calendrier";
+            model.addAttribute("errorMessage", "Ce jour n'est pas disponible à la réservation ");
+            return "errorPage";
         }
         List<Object[]> reservationsData = reservationRepository.findUniqueDateHeuresAndCount();
         Map<String, Integer> reservationsParCreneau = new LinkedHashMap<>();

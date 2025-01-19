@@ -11,7 +11,7 @@
 <body class="bg-light">
     <div class="container my-5">
         <h1 class="text-danger text-center">Erreur de Réservation</h1>
-        <p class="text-center">Désolé, une erreur est survenue lors de la tentative de réservation.</p>
+        <p class="text-center">Désolé, une erreur est survenue.</p>
 
         <div class="alert alert-danger text-center">
             <p><strong>Message d'erreur :</strong> <%= request.getAttribute("errorMessage") %></p>
