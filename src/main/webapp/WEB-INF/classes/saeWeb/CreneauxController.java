@@ -2,6 +2,8 @@ package saeWeb;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +14,11 @@ import POJO.Constraints;
 import POJO.ConstraintsRepository;
 import POJO.CreneauSuppr;
 import POJO.CreneauSupprRepository;
+import POJO.Reservation;
 import POJO.ReservationRepository;
+import POJO.Utilisateur;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -20,6 +26,7 @@ import java.time.LocalTime;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 public class CreneauxController {
@@ -32,6 +39,9 @@ public class CreneauxController {
 
     @Autowired
     private CreneauSupprRepository creneauSupprRepository;
+
+    @Autowired
+    private JavaMailSender sender;
 
     @GetMapping("/creneaux")
     public String afficherCreneaux(
@@ -90,12 +100,33 @@ public class CreneauxController {
         return "creneaux"; // Retourne la vue `creneaux.jsp`
     }
     @PostMapping("/supprimerCreneau")
-    public String supprimerCreneau(@RequestParam("dateHeure") String dateHeureStr) {
+    public String supprimerCreneau(@RequestParam("dateHeure") String dateHeureStr, Model model) throws MessagingException {
+        // Convertir la date/heure en LocalDateTime
         LocalDateTime dateHeure = LocalDateTime.parse(dateHeureStr);
+
+        // Enregistrer le créneau supprimé dans la base de données
         CreneauSuppr creneauSuppr = new CreneauSuppr();
         creneauSuppr.setDateHeure(dateHeure);
-
         creneauSupprRepository.save(creneauSuppr);
+
+        // Supprimer les réservations liées au créneau supprimé
+        List<Reservation> reservationsToDelete = reservationRepository.findByDateHeure(dateHeure);
+        List<Utilisateur> utilisateursConcernes = reservationsToDelete.stream()
+                .map(Reservation::getUtilisateur)
+                .distinct()
+                .collect(Collectors.toList());
+
+        reservationRepository.deleteAll(reservationsToDelete);
+
+        for (Utilisateur utilisateur : utilisateursConcernes) {
+            MimeMessage message = sender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message);
+            helper.setFrom("paullouis.gomis.etu@univ-lille.fr");
+            helper.setTo(utilisateur.getEmail());
+            helper.setSubject("Annulation d'un créneau concernant une de vos réservation");
+            helper.setText("Votre réservation pour le "+ dateHeureStr +" a malheuresement dù être annulé suite à un empèchement" );
+            sender.send(message);
+        }
 
         return "redirect:/calendrier";
     }
