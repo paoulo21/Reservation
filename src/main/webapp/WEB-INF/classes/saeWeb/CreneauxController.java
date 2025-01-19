@@ -48,7 +48,9 @@ public class CreneauxController {
         if (jour == null) {
             jour = LocalDate.now();
         }
-
+        if (!constraints.getEnabledDays().contains(jour.getDayOfWeek().getValue())) {
+            return "redirect:/calendrier";
+        }
         List<Object[]> reservationsData = reservationRepository.findUniqueDateHeuresAndCount();
         Map<String, Integer> reservationsParCreneau = new LinkedHashMap<>();
 

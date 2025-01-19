@@ -104,16 +104,23 @@
 
                             int currentReservations = reservationCounters.getOrDefault(currentDate.toString(), 0);
                     %>
-                        <td class="current-month" onclick="this.querySelector('form').submit();" style="cursor: pointer;">
-                            <form method="get" action="/creneaux" style="display: none;">
-                                <input type="hidden" name="jour" value="<%= currentDate %>">
-                            </form>
+                        <td class="current-month" 
+                            <% if (isEnabledDay) { %>
+                                onclick="this.querySelector('form').submit();" 
+                                style="cursor: pointer;"
+                            <% } else { %>
+                                style="cursor: not-allowed; color: gray;"
+                            <% } %>>
+                            <% if (isEnabledDay) { %>
+                                <form method="get" action="/creneaux" style="display: none;">
+                                    <input type="hidden" name="jour" value="<%= currentDate %>">
+                                </form>
+                            <% } %>
                             <%= jour %>
                             <div>
                                 Réservations Actuelles : <%= currentReservations %> / <%= maxReservations %>
                             </div>
                         </td>
-
                         <!-- Nouvelle ligne après chaque dimanche -->
                         <% if ((jour + premierJourDuMois - 1) % 7 == 0) { %>
                             </tr><tr>
