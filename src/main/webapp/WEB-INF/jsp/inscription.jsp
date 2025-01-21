@@ -31,7 +31,7 @@
                 <input type="file" id="image" name="image" class="form-control" accept="image/*">
             </div>
             <button type="submit" class="btn btn-primary">S'inscrire</button>
-            <a href="/connexion" class="btn btn-secondary">Se connecter</a>
+            <a href="/connexion" class="btn btn-secondary">Déjà un compte ?</a>
             <div class="alert alert-danger mt-3" style="display: ${not empty errorMessage ? 'block' : 'none'};">
                 ${errorMessage}
             </div>
