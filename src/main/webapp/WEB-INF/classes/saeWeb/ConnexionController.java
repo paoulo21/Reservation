@@ -5,6 +5,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +16,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import POJO.Utilisateur;
 import POJO.UtilisateurRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -21,6 +25,9 @@ public class ConnexionController {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
+
+    @Autowired
+    private JavaMailSender sender;
 
 
     // Affichage du formulaire d'inscription
@@ -37,7 +44,7 @@ public class ConnexionController {
                                         @RequestParam("nom") String nom,
                                         @RequestParam("prenom") String prenom,
                                         @RequestParam("email") String email,
-                                        Model model, HttpSession session) {
+                                        Model model, HttpSession session) throws MessagingException {
         Utilisateur utilisateur = new Utilisateur();
         utilisateur.setMdp(mdp);
         utilisateur.setNom(nom);
@@ -55,6 +62,14 @@ public class ConnexionController {
                 return "redirect:/calendrier"; // Redirection en cas d'erreur
             }
         }
+
+        MimeMessage message = sender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setFrom("paullouis.gomis.etu@univ-lille.fr");
+        helper.setTo(utilisateur.getEmail());
+        helper.setSubject("Nouveau compte sur le site de réservation");
+        helper.setText("Votre compte sur le site de réservation a été confirmé !" );
+        sender.send(message);
 
         utilisateurRepository.save(utilisateur);
         session.setAttribute("principal", utilisateur);
