@@ -1,9 +1,15 @@
 package saeWeb;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,15 +24,7 @@ import POJO.Reservation;
 import POJO.ReservationRepository;
 import POJO.Utilisateur;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import service.EmailService;
 
 @Controller
 public class CreneauxController {
@@ -41,7 +39,7 @@ public class CreneauxController {
     private CreneauSupprRepository creneauSupprRepository;
 
     @Autowired
-    private JavaMailSender sender;
+    private EmailService emailService;
 
     @GetMapping("/creneaux")
     public String afficherCreneaux(
@@ -119,13 +117,8 @@ public class CreneauxController {
         reservationRepository.deleteAll(reservationsToDelete);
 
         for (Utilisateur utilisateur : utilisateursConcernes) {
-            MimeMessage message = sender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message);
-            helper.setFrom("paullouis.gomis.etu@univ-lille.fr");
-            helper.setTo(utilisateur.getEmail());
-            helper.setSubject("Annulation d'un créneau concernant une de vos réservation");
-            helper.setText("Votre réservation pour le "+ dateHeureStr +" a malheuresement dù être annulé suite à un empèchement" );
-            sender.send(message);
+            emailService.sendSimpleMessage(utilisateur.getEmail(), "Annulation d'un créneau concernant une de vos réservation",
+                "Votre réservation pour le "+ dateHeureStr +" a malheuresement dù être annulé suite à un empèchement");
         }
 
         return "redirect:/calendrier";

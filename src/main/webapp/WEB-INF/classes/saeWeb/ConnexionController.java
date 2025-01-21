@@ -8,8 +8,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,7 +20,6 @@ import POJO.PasswordResetTokenRepository;
 import POJO.Utilisateur;
 import POJO.UtilisateurRepository;
 import jakarta.mail.MessagingException;
-import jakarta.mail.internet.MimeMessage;
 import jakarta.servlet.http.HttpSession;
 import service.EmailService;
 
@@ -31,9 +28,6 @@ public class ConnexionController {
 
     @Autowired
     private UtilisateurRepository utilisateurRepository;
-
-    @Autowired
-    private JavaMailSender sender;
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
@@ -75,13 +69,8 @@ public class ConnexionController {
             }
         }
 
-        MimeMessage message = sender.createMimeMessage();
-        MimeMessageHelper helper = new MimeMessageHelper(message);
-        helper.setFrom("paullouis.gomis.etu@univ-lille.fr");
-        helper.setTo(utilisateur.getEmail());
-        helper.setSubject("Nouveau compte sur le site de réservation");
-        helper.setText("Votre compte sur le site de réservation a été confirmé !" );
-        sender.send(message);
+        emailService.sendSimpleMessage(utilisateur.getEmail(), "Nouveau compte sur le site de réservation",
+                "Votre compte sur le site de réservation a été confirmé !");
 
         utilisateurRepository.save(utilisateur);
         session.setAttribute("principal", utilisateur);
