@@ -24,7 +24,6 @@ import POJO.Reservation;
 import POJO.ReservationRepository;
 import POJO.Utilisateur;
 import jakarta.mail.MessagingException;
-import service.EmailService;
 
 @Controller
 public class CreneauxController {

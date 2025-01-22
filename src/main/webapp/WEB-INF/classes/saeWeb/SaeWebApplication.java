@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @ServletComponentScan
 @SpringBootApplication
 @EntityScan(basePackages = "POJO")
-@ComponentScan(basePackages = "saeWeb.service")
+@ComponentScan(basePackages = "saeWeb")
 @EnableJpaRepositories(basePackages = "POJO")
 public class SaeWebApplication {
 

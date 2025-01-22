@@ -21,7 +21,6 @@ import POJO.Utilisateur;
 import POJO.UtilisateurRepository;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
-import service.EmailService;
 
 @Controller
 public class ConnexionController {
@@ -182,7 +181,7 @@ public class ConnexionController {
         // Supprimer le jeton après usage
         passwordResetTokenRepository.delete(resetToken);
 
-        return "redirect:/login?success=PasswordReset";
+        return "redirect:/connexion?success=PasswordReset";
     }
 
     // Fonction pour encoder un mot de passe avec MD5

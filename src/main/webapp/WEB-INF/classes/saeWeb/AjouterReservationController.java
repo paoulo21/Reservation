@@ -14,7 +14,6 @@ import POJO.Reservation;
 import POJO.ReservationRepository;
 import POJO.Utilisateur;
 import jakarta.servlet.http.HttpSession;
-import service.EmailService;
 
 @Controller
 public class AjouterReservationController {

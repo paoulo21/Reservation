@@ -25,6 +25,9 @@
             <div class="alert alert-danger mt-3" style="display: ${not empty errorMessage ? 'block' : 'none'};">
                 ${errorMessage}
             </div>
+            <div class="alert alert-success mt-3" style="display: <%= request.getParameter("success") != null ? "block" : "none" %>;">
+        Votre mot de passe a été réinitialisé. Vous pouvez vous connecter.
+    </div>
         </form>
     </div>
 </body>

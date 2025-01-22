@@ -36,14 +36,14 @@
     
 <% } else { %>
     <p>
+    <img src="/utilisateurs/${principal.id}/image" alt="Image de Profil" style="max-width: 200px; height: auto;"/>
         Bienvenue, <%= principal.getNom()%>.
         <a href="infos" class="btn btn-link">Mes informations</a>
-        <a href="mesReservations" class="btn btn-link">Mes Reservations</a>
-        <a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
+        <a href="mesReservations" class="btn btn-link">Mes Reservations</a> 
         <% if (principal.getRole().equals("Admin")) { %>
             <a href="admin" class="btn btn-link">Panneau Administrateur</a>
         <% } %>
-        <img src="/utilisateurs/${principal.id}/image" alt="Image de Profil" style="max-width: 200px; height: auto;"/>
+        <a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
     </p>
 <% } %>
     <div class="container">
@@ -98,20 +98,20 @@
                             boolean isEnabledDay = constraints != null &&
                                 constraints.getEnabledDays().contains(currentDate.getDayOfWeek().getValue());
 
-                            long maxReservations = isEnabledDay ? 
+                            long maxReservations = (isEnabledDay && currentDate.isAfter(LocalDate.now())) ? 
                                 (Duration.between(constraints.getStart(), constraints.getEnd()).toMinutes() 
                                 / constraints.getMinutesBetweenSlots() * constraints.getMaxPerSlot())-(deletedCounters.getOrDefault(currentDate,new Long(0))*constraints.getMaxPerSlot()) : 0;
 
                             int currentReservations = reservationCounters.getOrDefault(currentDate.toString(), 0);
                     %>
                         <td class="current-month" 
-                            <% if (isEnabledDay) { %>
+                            <% if (isEnabledDay && currentDate.isAfter(LocalDate.now())) { %>
                                 onclick="this.querySelector('form').submit();" 
                                 style="cursor: pointer;"
                             <% } else { %>
                                 style="cursor: not-allowed; color: gray;"
                             <% } %>>
-                            <% if (isEnabledDay) { %>
+                            <% if (isEnabledDay && currentDate.isAfter(LocalDate.now())) { %>
                                 <form method="get" action="/creneaux" style="display: none;">
                                     <input type="hidden" name="jour" value="<%= currentDate %>">
                                 </form>

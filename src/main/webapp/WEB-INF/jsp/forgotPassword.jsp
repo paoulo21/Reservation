@@ -32,16 +32,16 @@
                         <%
                             String success = request.getParameter("success");
                             String error = request.getParameter("error");
-                            if (success != null && success.equals("true")) {
+                            if (success != null) {
                         %>
                             <div class="alert alert-success mt-3">
                                 Un email de réinitialisation a été envoyé avec succès.
                             </div>
                         <% 
-                            } else if (error != null && error.equals("Utilisateur non trouvé")) {
+                            } else if (error != null) {
                         %>
                             <div class="alert alert-danger mt-3">
-                                Utilisateur non trouvé. Veuillez vérifier votre email.
+                                Utilisateur non trouvé. Veuillez vérifier que vous avez écrit la bonne adresse.
                             </div>
                         <% 
                             }
