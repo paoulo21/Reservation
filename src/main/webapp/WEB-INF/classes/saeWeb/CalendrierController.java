@@ -34,6 +34,11 @@ public class CalendrierController {
 
     private Map<String, Integer> reservationCounters = new HashMap<>();
 
+    @GetMapping("/")
+    public String redirectCalendrier(Model model){
+        return "redirect:/calendrier";
+    }
+
     @GetMapping("/calendrier")
     public String afficherCalendrier(
             @RequestParam(name = "mois", required = false) String moisParam,
