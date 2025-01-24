@@ -28,8 +28,8 @@
                 ${errorMessage}
             </div>
             <div class="alert alert-success mt-3" style="display: <%= request.getParameter("success") != null ? "block" : "none" %>;">
-        <spring:message code="label.reinitialisationEnvoyee"/>
-    </div>
+                <%= "PasswordReset".equals(request.getParameter("success")) ? "<spring:message code='label.reinitialisationEnvoyee'/>" : "Votre compte a été confirmé avec succès." %>
+            </div>
         </form>
     </div>
 </body>
