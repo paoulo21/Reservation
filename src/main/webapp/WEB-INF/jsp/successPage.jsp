@@ -1,25 +1,26 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réservation Réussie</title>
+    <title><spring:message code="title.success"/></title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
     <div class="container my-5">
-        <h1 class="text-success text-center">Réservation Réussie !</h1>
-        <p class="text-center">Merci pour votre réservation.</p>
+        <h1 class="text-success text-center"><spring:message code="label.reussie"/></h1>
+        <p class="text-center"><spring:message code="label.merci"/></p>
 
         <div class="alert alert-success text-center">
-            <p><strong>Jour :</strong> <%= request.getAttribute("jour") %></p>
-            <p><strong>Créneau :</strong> <%= request.getAttribute("creneau") %></p>
+            <p><strong><spring:message code="label.jour"/> :</strong> <%= request.getAttribute("jour") %></p>
+            <p><strong><spring:message code="label.creneau"/> :</strong> <%= request.getAttribute("creneau") %></p>
         </div>
 
         <div class="text-center mt-4">
-            <a href="calendrier" class="btn btn-secondary">Retour au calendrier</a>
+            <a href="calendrier" class="btn btn-secondary"><spring:message code="button.retourCalendrier"/></a>
         </div>
     </div>
     <!-- Bootstrap JS -->

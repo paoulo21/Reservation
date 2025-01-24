@@ -122,4 +122,42 @@ public class CreneauxController {
 
         return "redirect:/calendrier";
     }
+
+    @PostMapping("/supprimerReservationsJour")
+    public String supprimerReservationsJour(@RequestParam("jour") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate jour, Model model) throws MessagingException {
+        // Récupérer les contraintes depuis le repository avec l'ID 2
+        Constraints constraints = constraintsRepository.findById(2)
+                .orElseThrow(() -> new IllegalArgumentException("Contrainte introuvable"));
+
+        // Récupérer toutes les réservations pour le jour spécifié
+        List<Reservation> reservationsToDelete = reservationRepository.findByDateHeureBetween(jour.atStartOfDay(), jour.plusDays(1).atStartOfDay());
+        List<Utilisateur> utilisateursConcernes = reservationsToDelete.stream()
+                .map(Reservation::getUtilisateur)
+                .distinct()
+                .collect(Collectors.toList());
+
+        // Ajouter tous les créneaux du jour à la table CreneauSuppr
+        LocalTime start = constraints.getStart();
+        LocalTime end = constraints.getEnd();
+        int minutesEntreCreneaux = constraints.getMinutesBetweenSlots();
+
+        while (!start.isAfter(end)) {
+            LocalDateTime dateTime = LocalDateTime.of(jour, start);
+            CreneauSuppr creneauSuppr = new CreneauSuppr();
+            creneauSuppr.setDateHeure(dateTime);
+            creneauSupprRepository.save(creneauSuppr);
+            start = start.plusMinutes(minutesEntreCreneaux);
+        }
+
+        // Supprimer les réservations
+        reservationRepository.deleteAll(reservationsToDelete);
+
+        // Envoyer un email aux utilisateurs concernés
+        for (Utilisateur utilisateur : utilisateursConcernes) {
+            emailService.sendSimpleMessage(utilisateur.getEmail(), "Annulation de toutes les réservations pour le " + jour,
+                "Toutes vos réservations pour le " + jour + " ont été annulées.");
+        }
+
+        return "redirect:/calendrier";
+    }
 }

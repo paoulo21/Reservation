@@ -2,6 +2,7 @@
 <%@ page import="POJO.Utilisateur" %>
 <%@ page import="POJO.Reservation" %>
 <%@ page import="java.util.List" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 <%
     Utilisateur utilisateur = (Utilisateur) session.getAttribute("principal");
@@ -16,15 +17,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Reservations</title>
+    <title><spring:message code="title.mesReservations"/></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-<a href="infos" class="btn btn-link">Mes informations</a>
-<a href="calendrier" class="btn btn-link">Calendrier</a>
-<a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
+<a href="infos" class="btn btn-link"><spring:message code="link.mesInfos"/></a>
+<a href="calendrier" class="btn btn-link"><spring:message code="button.calendrier"/></a>
+<a href="deconnexion" class="btn btn-secondary"><spring:message code="button.deconnexion"/></a>
 <div class="container mt-5">
-    <h1 class="mb-4">Mes Reservations</h1>
+    <h1 class="mb-4"><spring:message code="title.mesReservations"/></h1>
 
     <%-- Message de succès si présent --%>
     <% String successMessage = (String) request.getAttribute("successMessage"); %>
@@ -45,9 +46,9 @@
     <table class="table table-striped">
         <thead>
         <tr>
-            <th>Date</th>
-            <th>Créneau</th>
-            <th>Action</th>
+            <th><spring:message code="label.date"/></th>
+            <th><spring:message code="label.creneau"/></th>
+            <th><spring:message code="label.actions"/></th>
         </tr>
         </thead>
         <tbody>
@@ -62,7 +63,7 @@
                 <td>
                     <form action="annulerReservations" method="post" style="display:inline;">
                         <input type="hidden" name="reservationId" value="<%= reservation.getId() %>">
-                        <button type="submit" class="btn btn-danger btn-sm">Annuler</button>
+                        <button type="submit" class="btn btn-danger btn-sm"><spring:message code="button.annuler"/></button>
                     </form>
                 </td>
             </tr>
@@ -71,7 +72,7 @@
             } else { 
         %>
             <tr>
-                <td colspan="3" class="text-center">Aucunes Reservations.</td>
+                <td colspan="3" class="text-center"><spring:message code="label.aucuneReservation"/></td>
             </tr>
         <% } %>
         </tbody>

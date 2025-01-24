@@ -6,9 +6,10 @@
 <%@ page import="java.util.List" %>
 <%@ page import="POJO.Constraints" %>
 <%@ page import="POJO.Utilisateur" %>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <html>
 <head>
-    <title>Calendrier Mensuel</title>
+    <title><spring:message code="title.calendrier"/></title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         table {
@@ -27,23 +28,24 @@
     </style>
 </head>
 <body>
+    <jsp:include page="header.jsp" />
     <% 
     Utilisateur principal = (Utilisateur)session.getAttribute("principal"); 
     %>
     <% if (principal == null) { %>
-    <a href="connexion" class="btn btn-primary">Se connecter</a>
-    <a href="inscription" class="btn btn-secondary">Créer un compte</a>
+    <a href="connexion" class="btn btn-primary"><spring:message code="button.seconnecter"/></a>
+    <a href="inscription" class="btn btn-secondary"><spring:message code="button.creercompte"/></a>
     
 <% } else { %>
     <p>
-    <img src="/utilisateurs/${principal.id}/image" alt="Image de Profil" style="max-width: 200px; height: auto;"/>
-        Bienvenue, <%= principal.getNom()%>.
-        <a href="infos" class="btn btn-link">Mes informations</a>
-        <a href="mesReservations" class="btn btn-link">Mes Reservations</a> 
+    <img src="/utilisateurs/${principal.id}/image" style="max-width: 200px; height: auto;"/>
+        <spring:message code="label.welcome"/> <%= principal.getNom()%>.
+        <a href="infos" class="btn btn-link"><spring:message code="link.mesinfos"/></a>
+        <a href="mesReservations" class="btn btn-link"><spring:message code="link.mesreservations"/></a> 
         <% if (principal.getRole().equals("Admin")) { %>
-            <a href="admin" class="btn btn-link">Panneau Administrateur</a>
+            <a href="admin" class="btn btn-link"><spring:message code="link.adminpanel"/></a>
         <% } %>
-        <a href="deconnexion" class="btn btn-secondary">Se déconnecter</a>
+        <a href="deconnexion" class="btn btn-secondary"><spring:message code="button.sedeconnecter"/></a>
     </p>
 <% } %>
     <div class="container">
@@ -57,17 +59,17 @@
             java.util.Map<String, Integer> reservationCounters = 
                 (java.util.Map<String, Integer>) request.getAttribute("reservationCounters");
         %>
-        <h1>Calendrier <%= constraints.getName() %></h1>
+        <h1><spring:message code="header.calendrier"/> <%= constraints.getName() %></h1>
         <!-- Boutons pour changer de mois -->
         <div class="navigation">
             <form method="get" action="/calendrier">
                 <input type="hidden" name="mois" value="<%= dateCourante.minusMonths(1) %>">
-                <button type="submit" class="btn btn-primary">Précédent</button>
+                <button type="submit" class="btn btn-primary"><spring:message code="button.precedent"/></button>
             </form>
 
             <form method="get" action="/calendrier">
                 <input type="hidden" name="mois" value="<%= dateCourante.plusMonths(1) %>">
-                <button type="submit" class="btn btn-primary">Suivant</button>
+                <button type="submit" class="btn btn-primary"><spring:message code="button.suivant"/></button>
             </form>
         </div>
 
@@ -75,13 +77,13 @@
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Lundi</th>
-                    <th>Mardi</th>
-                    <th>Mercredi</th>
-                    <th>Jeudi</th>
-                    <th>Vendredi</th>
-                    <th>Samedi</th>
-                    <th>Dimanche</th>
+                    <th><spring:message code="day.lundi"/></th>
+                    <th><spring:message code="day.mardi"/></th>
+                    <th><spring:message code="day.mercredi"/></th>
+                    <th><spring:message code="day.jeudi"/></th>
+                    <th><spring:message code="day.vendredi"/></th>
+                    <th><spring:message code="day.samedi"/></th>
+                    <th><spring:message code="day.dimanche"/></th>
                 </tr>
             </thead>
             <tbody>
@@ -102,6 +104,11 @@
                                 (Duration.between(constraints.getStart(), constraints.getEnd()).toMinutes() 
                                 / constraints.getMinutesBetweenSlots() * constraints.getMaxPerSlot())-(deletedCounters.getOrDefault(currentDate,new Long(0))*constraints.getMaxPerSlot()) : 0;
 
+                            if (maxReservations <= 0) {
+                                maxReservations = 0;
+                                isEnabledDay = false;
+                            }
+
                             int currentReservations = reservationCounters.getOrDefault(currentDate.toString(), 0);
                     %>
                         <td class="current-month" 
@@ -118,7 +125,7 @@
                             <% } %>
                             <%= jour %>
                             <div>
-                                Réservations Actuelles : <%= currentReservations %> / <%= maxReservations %>
+                                <spring:message code="label.reservationsactuelles"/> : <%= currentReservations %> / <%= maxReservations %>
                             </div>
                         </td>
                         <!-- Nouvelle ligne après chaque dimanche -->

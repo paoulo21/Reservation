@@ -1,9 +1,10 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mot de Passe Oublié</title>
+    <title><spring:message code="title.forgotPassword"/></title>
     <!-- Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
 </head>
@@ -14,18 +15,18 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h4>Mot de Passe Oublié</h4>
+                        <h4><spring:message code="title.forgotPassword"/></h4>
                     </div>
                     <div class="card-body">
 
                         <!-- Formulaire de réinitialisation de mot de passe -->
                         <form method="post" action="/forgotPassword">
                             <div class="form-group">
-                                <label for="email">Email</label>
+                                <label for="email"><spring:message code="label.email"/></label>
                                 <input type="email" id="email" name="email" class="form-control" required>
                             </div>
 
-                            <button type="submit" class="btn btn-primary">Réinitialiser le mot de passe</button>
+                            <button type="submit" class="btn btn-primary"><spring:message code="button.reinitialiser"/></button>
                         </form>
 
                         <!-- Affichage des messages de succès ou d'erreur -->
@@ -35,13 +36,13 @@
                             if (success != null) {
                         %>
                             <div class="alert alert-success mt-3">
-                                Un email de réinitialisation a été envoyé avec succès.
+                                <spring:message code="label.reinitialisationEnvoyee"/>
                             </div>
                         <% 
                             } else if (error != null) {
                         %>
                             <div class="alert alert-danger mt-3">
-                                Utilisateur non trouvé. Veuillez vérifier que vous avez écrit la bonne adresse.
+                                <spring:message code="label.utilisateurNonTrouve"/>
                             </div>
                         <% 
                             }

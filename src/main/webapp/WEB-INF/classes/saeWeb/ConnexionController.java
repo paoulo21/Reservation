@@ -19,6 +19,8 @@ import POJO.PasswordResetToken;
 import POJO.PasswordResetTokenRepository;
 import POJO.Utilisateur;
 import POJO.UtilisateurRepository;
+import POJO.ConfirmationToken;
+import POJO.ConfirmationTokenRepository;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpSession;
 
@@ -30,6 +32,9 @@ public class ConnexionController {
 
     @Autowired
     private PasswordResetTokenRepository passwordResetTokenRepository;
+
+    @Autowired
+    private ConfirmationTokenRepository confirmationTokenRepository;
 
     @Autowired
     private EmailService emailService;
@@ -51,11 +56,12 @@ public class ConnexionController {
                                         @RequestParam("email") String email,
                                         Model model, HttpSession session) throws MessagingException {
         Utilisateur utilisateur = new Utilisateur();
-        utilisateur.setMdp(mdp);
+        utilisateur.setMdp(md5(mdp));
         utilisateur.setNom(nom);
         utilisateur.setPrenom(prenom);
         utilisateur.setEmail(email);
         utilisateur.setRole("User");
+        utilisateur.setConfirmed(false); // Set confirmed to false initially
         
         // Gérer l'image
         if (!imageFile.isEmpty()) {
@@ -68,12 +74,36 @@ public class ConnexionController {
             }
         }
 
-        emailService.sendSimpleMessage(utilisateur.getEmail(), "Nouveau compte sur le site de réservation",
-                "Votre compte sur le site de réservation a été confirmé !");
-
         utilisateurRepository.save(utilisateur);
+
+        // Generate confirmation token
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(token, utilisateur);
+        confirmationTokenRepository.save(confirmationToken);
+
+        // Send confirmation email
+        String confirmationLink = "http://localhost:8080/confirm?token=" + token;
+        emailService.sendSimpleMessage(utilisateur.getEmail(), "Confirmation de compte",
+                "Cliquez sur ce lien pour confirmer votre compte : " + confirmationLink);
+
         session.setAttribute("principal", utilisateur);
-        return "redirect:/calendrier";
+        return "redirect:/connexion?success=Inscription réussie. Veuillez vérifier votre email pour confirmer votre compte.";
+    }
+
+    @GetMapping("/confirm")
+    public String confirmUserAccount(@RequestParam("token") String token, Model model) {
+        Optional<ConfirmationToken> confirmationTokenOpt = confirmationTokenRepository.findByToken(token);
+
+        if (confirmationTokenOpt.isPresent()) {
+            ConfirmationToken confirmationToken = confirmationTokenOpt.get();
+            Utilisateur utilisateur = confirmationToken.getUtilisateur();
+            utilisateur.setConfirmed(true);
+            utilisateurRepository.save(utilisateur);
+            confirmationTokenRepository.delete(confirmationToken);
+            return "redirect:/connexion?success=Compte confirmé avec succès.";
+        } else {
+            return "redirect:/connexion?error=Token invalide ou expiré.";
+        }
     }
 
     // Connexion de l'utilisateur
@@ -87,6 +117,10 @@ public class ConnexionController {
     public String connecterUtilisateur(@RequestParam("mail") String mail, @RequestParam("mdp") String mdp, HttpSession session, Model model) {
         Utilisateur utilisateur = utilisateurRepository.findByemailAndMdp(mail, md5(mdp));
         if (utilisateur != null) {
+            if (!utilisateur.isConfirmed()) {
+                model.addAttribute("errorMessage", "Votre compte n'est pas encore confirmé. Veuillez vérifier votre email.");
+                return "connexion";
+            }
             session.setAttribute("principal", utilisateur);
             return "redirect:/calendrier";
         } else {

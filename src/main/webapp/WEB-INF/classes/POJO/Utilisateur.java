@@ -35,6 +35,9 @@ public class Utilisateur {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "confirmed", nullable = false)
+    private boolean confirmed;
+
     // Relation One-to-Many (un utilisateur peut avoir plusieurs réservations)
     @OneToMany(mappedBy = "utilisateur", cascade = CascadeType.ALL)
     private List<Reservation> reservations;
@@ -98,6 +101,14 @@ public class Utilisateur {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public boolean isConfirmed() {
+        return confirmed;
+    }
+
+    public void setConfirmed(boolean confirmed) {
+        this.confirmed = confirmed;
     }
 
     public byte[] getImageProfil() {
